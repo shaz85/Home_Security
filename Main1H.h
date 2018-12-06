@@ -42,7 +42,7 @@ unsigned char Zone5_Rep = 1 , Zone6_Rep = 1 , Zone7_Rep = 1 ,Zone8_Rep = 1 ;
  char ATCMGF[12]="AT+CMGF=1\r";
  char ATCMGS[10]="AT+CMGS=";
 
- char Password[7]="Mega>",Master[15]="+923347455997";
+ char Password[7]="Mega>",Master[15]="+923096891878";
  char Master1[15]="+923349575949";
  char M_Recv_numb[15];
  char CTRL_Z=26;

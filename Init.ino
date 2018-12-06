@@ -6,8 +6,9 @@ void initlization(void){
   // sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;     UBRR0H = B0;   UBRR0L = 207;
 cli();
    sbi(UCSR0A, U2X0);   sbi(UCSR0B, RXCIE0);    sbi(UCSR0B, RXEN0); 
-   sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;    UBRR0H = 0x06; //UBRR0H = B0;   
-   UBRR0L = 0x82; 
+   sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;    //UBRR0H = 0x06; 
+   UBRR0H = B0;   
+   UBRR0L = 207; //0x82
    //set timer1 interrupt at 1Hz
   TCCR1A = 0;// set entire TCCR1A register to 0
   TCCR1B = 0;// same for TCCR1B
@@ -27,6 +28,10 @@ cli();
     pinMode(13, OUTPUT);
      cli();
      New_Setting();sei();
+     pinMode(13,OUTPUT);
+
+  pinMode(ZONE1_PIN, INPUT); pinMode(ZONE2_PIN, INPUT);
+  pinMode(ZONE2_PIN, INPUT); pinMode(ZONE4_PIN, INPUT);
 
 }
 

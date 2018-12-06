@@ -3,15 +3,46 @@
   //**************************************************************//
  //********************* Timer 1 Interrupt **********************//
 //**************************************************************//
-
+char flagV=0;
 ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
   //generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
   Touch_1Sec=0;
-  one_sec++;Packet_Send_Time++;
+  if(flagV == 0){
+    digitalWrite(13, HIGH);
+    flagV++;
+  }
+  else if(flagV == 1){
+    digitalWrite(13, LOW);
+    flagV=0;
+  }
+  if(digitalRead(ZONE1_PIN))
+    zone1_up_debounce++; 
+  else if(!digitalRead(ZONE1_PIN))
+    zone1_down_debounce++;
+
+  if(digitalRead(ZONE2_PIN))
+    zone2_up_debounce++; 
+  else if(!digitalRead(ZONE2_PIN))
+    zone2_down_debounce++;
+  
+  if(digitalRead(ZONE3_PIN))
+    zone3_up_debounce++; 
+  else if(!digitalRead(ZONE3_PIN))
+    zone3_down_debounce++;
+  
+  if(digitalRead(ZONE4_PIN))
+    zone4_up_debounce++; 
+  else if(!digitalRead(ZONE4_PIN))
+    zone4_down_debounce++;
+  
+
+  
+  /*one_sec++;Packet_Send_Time++;
   Repeat_SMS_Reply++;
   if(Repeat_SMS_Reply>0)Repeat_SMS_Reply=70;
  
   if(one_sec >59){ one_sec =0; All_Time++; thisRUN_Time++;}
+  */
 }
 
   //**************************************************************//

@@ -4,24 +4,63 @@ void Battery_Voltage(void){
  
 }
 
+unsigned char message_send_zones=0;
+unsigned char stability_sensor_cnt = 20;
   //**************************************************************//
  //********************* Motion_and_Smoke  **********************//
 //**************************************************************//
-void Motion_and_Smoke(void){
+void door_open_check(void){
     // Fire_sensor();
     if(System_Enable_Disable == 0x31 ){      
-      if(Zone1_Status == 1 && Sensor_1E == 0x31){
-        Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
-      }
-      else if(Zone2_Status == 1 && Sensor_2E == 0x31){
-        Send_SMS_AlertsP2(2);Zone2_Status=0; if(call_ED== Enable) Security_call();}
-       
-      else if(Zone3_Status == 1 && Sensor_3E == 0x31){
-        Send_SMS_AlertsP2(3);Zone3_Status=0; if(call_ED== Enable) Security_call();}
-       
-      else if(Zone4_Status == 1 && Sensor_4E == 0x31){
-        Send_SMS_AlertsP2(4);Zone4_Status=0; if(call_ED== Enable) Security_call();}
       
+      if(Zone1_Status == 1 && Sensor_1E == 0x31 && zone1_up_debounce > stability_sensor_cnt){
+        if(message_send_zones && 0xFE){     
+          Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
+        }
+        else{
+          message_send_zones |=0x01;
+          zone1_up_debounce = stability_sensor_cnt + 2;
+          zone1_down_debounce = 0;
+        }
+      }
+
+
+      if(Zone1_Status == 1 && Sensor_1E == 0x31 && zone1_up_debounce > stability_sensor_cnt){
+        if(message_send_zones && 0xFE){     
+          Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
+        }
+        else{
+          message_send_zones |=0x01;
+          zone2_up_debounce = stability_sensor_cnt + 2;
+          zone2_down_debounce = 0;
+        }
+      }
+       
+      
+      if(Zone3_Status == 1 && Sensor_3E == 0x31 && zone3_up_debounce > stability_sensor_cnt){
+        if(message_send_zones && 0xFE){     
+          Send_SMS_AlertsP2(3);Zone4_Status=0; if(call_ED== Enable) Security_call();
+        }
+        else{
+          message_send_zones |=0x04;
+          zone3_up_debounce = stability_sensor_cnt + 2;
+          zone3_down_debounce = 0;
+        }
+      }
+
+
+      if(Zone4_Status == 1 && Sensor_4E == 0x31 && zone4_up_debounce > stability_sensor_cnt){
+        if(message_send_zones && 0xF7){     
+          Send_SMS_AlertsP2(4);Zone4_Status=1; if(call_ED== Enable) Security_call();
+        }
+        else{
+          message_send_zones |=0x08;
+          zone4_up_debounce = stability_sensor_cnt + 2;
+          zone4_down_debounce = 0;
+        }
+      }
+      
+
       else if(Zone5_Status == 1 && Sensor_5E == 0x31){
         Send_SMS_AlertsP2(5);Zone5_Status=0; if(call_ED== Enable) Security_call();}
       
