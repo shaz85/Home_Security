@@ -13,7 +13,17 @@
 
 
 //char Door
+#define FIRST_BIT     0
+#define SECOND_BIT    1
+#define THIRD_BIT     2
+#define FOURTH_BIT    3
+#define FIFTH_BIT     4
+#define SIXTH_BIT     5
+#define SEVENTH_BIT   6
+#define EIGHTH_BIT    7
 
+unsigned int alert_status_flag  = 0xFFFF;
+unsigned int message_send_flag1 = 0x0000;
 
 char Turn_OFF_Buzzer=0x31;
 char Mode = 0x30;

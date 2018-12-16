@@ -4,32 +4,30 @@
 //**************************************************************//
 
 void new_Line(void){print_strU0("\r");}
- void Send_SMS(unsigned char val){
+
+void Send_SMS(unsigned char val){
       unsigned char temp[4],temp1[7],const_arr;
       unsigned int i,j,tempDays,tempMinute, tempHours;
-    if(str_clearF!=1)
-     GSM_str_clear();
-      //UART0_NL();
-      SoftUartNL();
-      //Soft_printstr("R");
-      delay(10);Soft_printstr(ATCMGF);delay(10);
-      //for(i=0;i<100&ATCSCS[i]!=0;i++)
-        //  uart_send( ATCSCS[i]); 
-      delay(10);
-       Soft_printstr(ATCMGS);Soft_uart_send('"');
-       Soft_printstr(M_Recv_numb);
-       Soft_uart_send('"');SoftUartNL();delay(1800);
+    
 
  /***************************************************************************/
    if(val == 1){  //Send Save Number in EEPROM cmd 1
-      for(i=0;i<5;i++){
-         for(j=0;j<13;j++){
-            if((PhoneNOList[i][j]>=0x30&&PhoneNOList[i][j]<=0x39)|PhoneNOList[i][j]=='+')
-                Soft_uart_send(PhoneNOList[i][j]);
-                //Delay_us(1);
-               } Soft_uart_send(',');
-       }saved_EppromV=12;  
-       }
+    text ="";
+    for(i=0;i<5;i++){         
+      if((PhoneNOList[i][0]>=0x30&&PhoneNOList[i][0]<=0x39)|PhoneNOList[i][0]=='+'){
+        text += String(PhoneNOList[i]);
+        text += String(",");
+      }          
+     }
+     text.toCharArray(text_message, 149);
+     sender_number.toCharArray(number,15);
+     Serial.println(text_message);
+     Serial.print("number ");
+     Serial.println(number);
+
+     int ret = Sim800l.sendSms(number,text_message); // sender_number
+     Serial.println(ret);
+    }
  
  /***************************************************************************/
   //Alert Message for any sensor out of range

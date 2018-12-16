@@ -6,29 +6,34 @@ char valid_number=0;
    //*************************************************************//
   //*********************** Message Extration  *******************//
 //**************************************************************//
- void Message_extraction(void){
+void Message_extraction(void){
 
-       unsigned int i,jj,dd, char_to_int;
-       char cmp_pas[8] ; 
-       for(i=0;i<15;i++)M_Recv_numb[i]=0;
-
+   unsigned int i,jj,dd, char_to_int;
+   char cmp_pas[8] ;
+   uint8_t _idx1= text.indexOf("+CMGR:");
+    _idx1=text.indexOf("\",\"",_idx1+1);
+    sender_number = "";
+    sender_number =  text.substring(_idx1+3,text.indexOf("\",\"",_idx1+4)); 
+   
    /***************************************************************************/    
-
-          strncpy(Message, res= strstr(gsm_data,"+92"),140);
-         
-          strncpy(M_Recv_numb,Message,13);  // Getting SMS recived number
-         
-          strncpy(cmp_pas,res= strstr( gsm_data,Password),5);cmp_pas[5]=0;cmp_pas[6]=0;
+  Serial.println("number " + sender_number); 
    /************************ Valid number checking ***************************/
-      if(strcmp(M_Recv_numb,Master)==0)valid_number=1;
-      else if (strcmp(M_Recv_numb,Master1)==0)valid_number=1;
-      else if(1){ for(i=0;i<5;i++)if(strcmp(M_Recv_numb,PhoneNOList[i])==0){valid_number=i+1;break;}}
-      
+  if(sender_number == String(Master)) valid_number=1;
+  else if (sender_number == String(Master1))valid_number=1;
+  else if(1){ 
+    for(i=0;i<5;i++)
+      if(sender_number == String(PhoneNOList[i])){
+        valid_number=i+1;break;
+      }
+  }
+  //_idx1= text.indexOf("Mega>");
+  //text = text.substring(_idx1);
+  //Serial.println(text);
+  text.toCharArray(Message, 150);   
   if(valid_number){print_strU0("VM $");
+  strcpy(Message,strstr(Message,"Mega>"));
   
   
-  if(strcmp(Password,cmp_pas)==0){   strcpy(Message, strstr( gsm_data,">"));
-       // print_strU0("ALL OK\r");
        
     /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
      
@@ -36,11 +41,11 @@ char valid_number=0;
 for(jj=0;Message[jj]!=0&&jj<150;jj++){
        
  //Phone number recieved for SMS alerts and calls
- if(Message[jj]=='C'&&Message[jj+1]=='1'){
+ if(Message[jj]=='>' && Message[jj+1]=='C' && Message[jj+2]=='1'){
     phone_numbers_Read();
     Send_SMS(1);     
     break;
- }
+  }
   /******************************************************************/
                   //Android and Non Android ALerts Enabling      
   if(Message[jj]=='C'&& Message[jj+1]=='2'){ jj+=3; 
@@ -58,7 +63,7 @@ for(jj=0;Message[jj]!=0&&jj<150;jj++){
     Send_SMS(8);
     break;
   }
-/***************************************************************************/
+  /***************************************************************************/
                   //SMS alerts repetation for all kind of alerts
   if(Message[jj]=='A' && Message[jj+1]=='R'){ jj+=2;
    SMS_Repetation(jj);
@@ -133,9 +138,9 @@ for(jj=0;Message[jj]!=0&&jj<150;jj++){
      } //for loop
   
     /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
-   } //if condtion for pasword match
-  }
-  }
+  } //if condtion for pasword match
+  
+}
  
 
 
@@ -145,23 +150,24 @@ for(jj=0;Message[jj]!=0&&jj<150;jj++){
 
 
 void phone_numbers_Read(void){
-          unsigned char EE1,EEIN,add;
-         strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[0],Message,13);
-          //2nd Number
-         strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[1],Message,13);
-          //3rd Number
-         strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[2],Message,13);
-          //4th Number
-         strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[3],Message,13);
-          //5th Number
-         strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[4],Message,13);
-         add=2;         
-         for(EE1=0;EE1<5;EE1++){
-            for(EEIN=0;EEIN<13;EEIN++){
-                EEPROM.write(add,PhoneNOList[EE1][EEIN]);//delay(5);
-                add++;
-               }
-            }
+  unsigned char EE1,EEIN,add;
+  strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[0],Message,13);
+  //2nd Number
+  strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[1],Message,13);
+  //3rd Number
+  strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[2],Message,13);
+  //4th Number
+  strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[3],Message,13);
+  //5th Number
+  strcpy(Message,strstr(Message,","));strcpy(Message,strstr(Message,"+92"));strncpy(PhoneNOList[4],Message,13);
+  add=2;         
+  for(EE1=0;EE1<5;EE1++){
+    for(EEIN=0;EEIN<13;EEIN++){
+        EEPROM.write(add,PhoneNOList[EE1][EEIN]);//delay(5);
+        add++;
+       }
+    }
+  for(EE1=0; EE1<5; EE1++)Serial.println(PhoneNOList[EE1]);
 }
 
 

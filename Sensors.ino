@@ -5,79 +5,99 @@ void Battery_Voltage(void){
 }
 
 unsigned char message_send_zones=0;
-unsigned char stability_sensor_cnt = 20;
+unsigned char stability_sensor_cnt = 60;
   //**************************************************************//
  //********************* Motion_and_Smoke  **********************//
 //**************************************************************//
-void door_open_check(void){
+void sensors_status_check(void){
     // Fire_sensor();
-    if(System_Enable_Disable == 0x31 ){      
-      
-      if(Zone1_Status == 1 && Sensor_1E == 0x31 && zone1_up_debounce > stability_sensor_cnt){
-        if(message_send_zones && 0xFE){     
-          Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
-        }
-        else{
-          message_send_zones |=0x01;
-          zone1_up_debounce = stability_sensor_cnt + 2;
-          zone1_down_debounce = 0;
-        }
+  static unsigned char sendDebug=0;
+  if(System_Enable_Disable == 0x31 ){      
+    
+    if(Sensor_1E == 0x31 && zone1_up_debounce > stability_sensor_cnt){
+      zone1_up_debounce = stability_sensor_cnt;
+      zone1_down_debounce = 0;
+      if(sendDebug==0){
+        print_strU0("open \r\n");
+        sendDebug=1;
       }
 
-
-      if(Zone1_Status == 1 && Sensor_1E == 0x31 && zone1_up_debounce > stability_sensor_cnt){
-        if(message_send_zones && 0xFE){     
-          Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
-        }
-        else{
-          message_send_zones |=0x01;
-          zone2_up_debounce = stability_sensor_cnt + 2;
-          zone2_down_debounce = 0;
-        }
+      if(bitRead(message_send_flag1, FIRST_BIT) ){  
+        bitClear(alert_status_flag, FIRST_BIT);   
+        Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
+        bitClear(message_send_flag1, FIRST_BIT);
+        bitSet(alert_status_flag, FIRST_BIT); 
+        print_strU0("Alerts\r");
       }
-       
-      
-      if(Zone3_Status == 1 && Sensor_3E == 0x31 && zone3_up_debounce > stability_sensor_cnt){
-        if(message_send_zones && 0xFE){     
-          Send_SMS_AlertsP2(3);Zone4_Status=0; if(call_ED== Enable) Security_call();
-        }
-        else{
-          message_send_zones |=0x04;
-          zone3_up_debounce = stability_sensor_cnt + 2;
-          zone3_down_debounce = 0;
-        }
-      }
-
-
-      if(Zone4_Status == 1 && Sensor_4E == 0x31 && zone4_up_debounce > stability_sensor_cnt){
-        if(message_send_zones && 0xF7){     
-          Send_SMS_AlertsP2(4);Zone4_Status=1; if(call_ED== Enable) Security_call();
-        }
-        else{
-          message_send_zones |=0x08;
-          zone4_up_debounce = stability_sensor_cnt + 2;
-          zone4_down_debounce = 0;
-        }
-      }
-      
-
-      else if(Zone5_Status == 1 && Sensor_5E == 0x31){
-        Send_SMS_AlertsP2(5);Zone5_Status=0; if(call_ED== Enable) Security_call();}
-      
-      else if(Zone6_Status == 1 && Sensor_6E == 0x31){
-        Send_SMS_AlertsP2(6);Zone6_Status=0; if(call_ED== Enable) Security_call();}
-      
-      else if(Zone7_Status == 1 && Sensor_7E == 0x31){
-        Send_SMS_AlertsP2(7);Zone7_Status=0; if(call_ED== Enable) Security_call();}
-      
-      else if(Zone8_Status == 1 && Sensor_8E == 0x31){
-        Send_SMS_AlertsP2(8);Zone8_Status=0; if(call_ED== Enable) Security_call();}  
-         
     }
-    else {
-            digitalWrite(Buzzer_ON_1, LOW); Alarm = 0;digitalWrite(Red_led, LOW);
-        
-       } 
+
+    else if(zone1_down_debounce > stability_sensor_cnt){        
+      zone1_up_debounce = stability_sensor_cnt ;
+      zone1_down_debounce = 0;
+      zone1_up_debounce = 0;
+      if(sendDebug==1){
+       print_strU0("NoAlerts  \r\n");
+        sendDebug=0;
+      } 
+      bitSet(message_send_flag1, FIRST_BIT);
+    }
+    
+/*
+
+    if(Zone1_Status == 1 && Sensor_1E == 0x31 && zone1_up_debounce > stability_sensor_cnt){
+      if(message_send_zones && 0xFE){     
+        Send_SMS_AlertsP2(1);Zone1_Status=0; if(call_ED== Enable) Security_call();
+      }
+      else{
+        message_send_zones |=0x01;
+        zone2_up_debounce = stability_sensor_cnt + 2;
+        zone2_down_debounce = 0;
+      }
+    }
+     
+    
+    if(Zone3_Status == 1 && Sensor_3E == 0x31 && zone3_up_debounce > stability_sensor_cnt){
+      if(message_send_zones && 0xFE){     
+        Send_SMS_AlertsP2(3);Zone4_Status=0; if(call_ED== Enable) Security_call();
+      }
+      else{
+        message_send_zones |=0x04;
+        zone3_up_debounce = stability_sensor_cnt + 2;
+        zone3_down_debounce = 0;
+      }
+    }
+
+
+    if(Zone4_Status == 1 && Sensor_4E == 0x31 && zone4_up_debounce > stability_sensor_cnt){
+      if(message_send_zones && 0xF7){     
+        Send_SMS_AlertsP2(4);Zone4_Status=1; if(call_ED== Enable) Security_call();
+      }
+      else{
+        message_send_zones |=0x08;
+        zone4_up_debounce = stability_sensor_cnt + 2;
+        zone4_down_debounce = 0;
+      }
+    }
+    
+
+    else if(Zone5_Status == 1 && Sensor_5E == 0x31){
+      Send_SMS_AlertsP2(5);Zone5_Status=0; if(call_ED== Enable) Security_call();}
+    
+    else if(Zone6_Status == 1 && Sensor_6E == 0x31){
+      Send_SMS_AlertsP2(6);Zone6_Status=0; if(call_ED== Enable) Security_call();}
+    
+    else if(Zone7_Status == 1 && Sensor_7E == 0x31){
+      Send_SMS_AlertsP2(7);Zone7_Status=0; if(call_ED== Enable) Security_call();}
+    
+    else if(Zone8_Status == 1 && Sensor_8E == 0x31){
+      Send_SMS_AlertsP2(8);Zone8_Status=0; if(call_ED== Enable) Security_call();}  
+    */   
+  }
+  else {
+          digitalWrite(Buzzer_ON_1, LOW); Alarm = 0;digitalWrite(Red_led, LOW);
+      
+     }
+
 }
 
 

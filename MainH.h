@@ -22,17 +22,17 @@
 
 
 
- char AT_cmd[4]="AT\r";
-  char get_strUart2[30], get_strUart2Cnt=0;
+char AT_cmd[4]="AT\r";
+char get_strUart2[30], get_strUart2Cnt=0;
 
-  unsigned char Zone1_Prev=200, Zone2_Prev=200, Zone3_Prev=200, Zone4_Prev=200;
-  unsigned char Zone5_Prev=200, Zone6_Prev=200, Zone7_Prev=200, Zone8_Prev=200;
+unsigned char Zone1_Prev=200, Zone2_Prev=200, Zone3_Prev=200, Zone4_Prev=200;
+unsigned char Zone5_Prev=200, Zone6_Prev=200, Zone7_Prev=200, Zone8_Prev=200;
  
- char Zone1_Status = 0, Zone2_Status = 0, Zone3_Status = 0, Zone4_Status = 0;
- char Zone5_Status = 0, Zone6_Status = 0, Zone7_Status = 0, Zone8_Status = 0;
+char Zone1_Status = 0, Zone2_Status = 0, Zone3_Status = 0, Zone4_Status = 0;
+char Zone5_Status = 0, Zone6_Status = 0, Zone7_Status = 0, Zone8_Status = 0;
 
- unsigned int zone1_up_debounce = 0 , zone2_up_debounce = 0 , zone3_up_debounce = 0, zone4_up_debounce = 0;
- unsigned int zone1_down_debounce = 0 , zone2_down_debounce = 0 , zone3_down_debounce = 0, zone4_down_debounce = 0;
+unsigned int zone1_up_debounce = 0 , zone2_up_debounce = 0 , zone3_up_debounce = 0, zone4_up_debounce = 0;
+unsigned int zone1_down_debounce = 0 , zone2_down_debounce = 0 , zone3_down_debounce = 0, zone4_down_debounce = 0;
 
  
 char  str_clearF=0;

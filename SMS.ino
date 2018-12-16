@@ -31,54 +31,37 @@ void SMS_Del_All(void){
   /********************************* SMS_check *******************************/
  /***************************************************************************/
 
-void SMS_check(void){
-
-      unsigned int i,jj,add;
-      unsigned char New_SMS=0;
-     
-                  
-      GSM_str_clear();   Soft_printstr(ATCMGF);delay(5);
-      
-      if(csc_cnt >10){
-           len = strlen_P(ATCPMS);GSM_str_clear();
-           for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (ATCPMS+pV));           
-           for(i=0;i<5300;i++){if(mySerial.available())gsm_data[recv_cnt++] = mySerial.read(); delay(1);  if(recv_cnt>248)recv_cnt=247;}       
-           print_strU0(gsm_data);GSM_str_clear();
-          csc_cnt = 0 ; 
-       }
-     
+void SMS_check(void){      
     
-    Soft_printstr(ATCMGL_ALL); 
-    Check_RecievedSMS(3); 
+  //Soft_printstr(ATCMGL_ALL); 
+  text = Sim800l.readSms(1);
+  //Serial.println(text);
    
-  if(recv_cnt > 35){ // New SMS Arrived
-      
-       for(jj=0;jj<150;jj++) Message[jj]=0;//Array initlization
-         print_strU0("New");  
-          print_strU0(gsm_data);
-         if( strstr(gsm_data,"+CMGL:")!=0){
-            //print_strU0(gsm_data);
-            Message_extraction();           
-            SMS_Del_All();
-        }
-    }
+  if(text.length() > 35){ // New SMS Arrive 
+    Serial.println(F("New message"));   
+    Message_extraction();           
+    Sim800l.delAllSms();  
+    Sim800l.delAllSms();      
+  }
 }
 
   /*************************************************************************/
  /**************************** Check_RecievedSMS **************************/
 /*************************************************************************/
 
-void Check_RecievedSMS(unsigned char Val){
+void Check_RecievedSMS(unsigned char delay_seconds){
      long int i;    
      //recv_cnt=0;
-  if(Val == 100){Val=2;  
+  if(delay_seconds == 100){delay_seconds=3;  
      SoftUartNL();
   }
 
-  for(i=0;i<(55000*Val);i++){
+  for(i=0; i < (1000 * delay_seconds ); i++){
     if(mySerial.available()){
       gsm_data[recv_cnt++] = mySerial.read(); i=0; 
-    } 
+      uart_send(mySerial.read());
+    }
+    delayMicroseconds(50);
     if(recv_cnt>248)recv_cnt=247;
   }
   
