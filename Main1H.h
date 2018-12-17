@@ -13,24 +13,22 @@
 
 
 //char Door
-#define FIRST_BIT     0
-#define SECOND_BIT    1
-#define THIRD_BIT     2
-#define FOURTH_BIT    3
-#define FIFTH_BIT     4
-#define SIXTH_BIT     5
-#define SEVENTH_BIT   6
-#define EIGHTH_BIT    7
 
-unsigned int alert_status_flag  = 0xFFFF;
-unsigned int message_send_flag1 = 0x0000;
 
 char Turn_OFF_Buzzer=0x31;
 char Mode = 0x30;
 char Debug_Ms = 0x31;
 
+#define ZONE1_PIN 2
+#define ZONE2_PIN 3
+#define ZONE3_PIN 7
+#define ZONE4_PIN 12
 
 
+unsigned int zone1_up_debounce = 0 , zone2_up_debounce = 0 , zone3_up_debounce = 0, zone4_up_debounce = 0;
+unsigned int zone1_down_debounce = 0 , zone2_down_debounce = 0 , zone3_down_debounce = 0, zone4_down_debounce = 0;
+
+unsigned char zone1_in_alert=1, zone2_in_alert=1, zone3_in_alert=1, zone4_in_alert=1;
 int ZoneFire_CntSet=200;
 int zone_FireTH=600;
 
@@ -52,18 +50,18 @@ unsigned char Zone5_Rep = 1 , Zone6_Rep = 1 , Zone7_Rep = 1 ,Zone8_Rep = 1 ;
  char ATCMGF[12]="AT+CMGF=1\r";
  char ATCMGS[10]="AT+CMGS=";
 
- char Password[7]="Mega>",Master[15]="+923096891878";
- char Master1[15]="+923349575949";
+ char Password[7]="Mega>",Master[15]="+923347455997";
+ char Master1[15]="+923096891878";
  char M_Recv_numb[15];
  char CTRL_Z=26;
  char Volt_Var[7];
  
- 
+ //Init923347455997,+923059784266,+923347455997,+923096891878,,
 int Packet_Send_Time=60;
 
 
 const int GSM_Reboot_Pin =  9;
-char gsm_data[250];
+char gsm_data[250]; 
 int recv_cnt=0;
 char saved_EppromV=0;
 unsigned char data_EEPROM[30];

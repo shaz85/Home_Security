@@ -2,16 +2,27 @@
 void initlization(void){
    
   
- //  sbi(UCSR0A, U2X0);   sbi(UCSR0B, RXCIE0);    sbi(UCSR0B, RXEN0); 
-  // sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;     UBRR0H = B0;   UBRR0L = 207;
-cli();
-  /* sbi(UCSR0A, U2X0);   sbi(UCSR0B, RXCIE0);    sbi(UCSR0B, RXEN0); 
-   sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;    //UBRR0H = 0x06; 
-   UBRR0H = B0;   
-   UBRR0L = 207; //0x82
+  sbi(UCSR0A, U2X0);   sbi(UCSR0B, RXCIE0);    sbi(UCSR0B, RXEN0); 
+  sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;     UBRR0H = B0;   UBRR0L = 207;
+  
+  cli();
+  // sbi(UCSR0A, U2X0);   sbi(UCSR0B, RXCIE0);    sbi(UCSR0B, RXEN0); 
+  // sbi(UCSR0B, TXEN0);  UCSR0C = B00000110;    UBRR0H = 0x06; //UBRR0H = B0;   
+  // UBRR0L = 0x82; //1200 Baud rate
+   //set timer1 interrupt at 1Hz
+  /*TCCR1A = 0;// set entire TCCR1A register to 0
+  TCCR1B = 0;// same for TCCR1B
+  TCNT1  = 0;//initialize counter value to 0
+  // set compare match register for 1hz increments
+  OCR1A = 60;// = (16*10^6) / (1*1024) - 1 (must be <65536) // old 15624 for 1sec
+  // turn on CTC mode
+  TCCR1B |= (1 << WGM01); // old (1 << WGM12);
+  // Set CS12 and CS10 bits for 1024 prescaler
+  TCCR1B |= (1 << CS01) | (1 << CS00);  //old (1 << CS12) | (1 << CS10);  
+  // enable timer compare interrupt
+  TIMSK1 |= (1 << OCIE1A);
   */
 
-  //set timer0 interrupt at 1kHz
   TCCR2A = 0;// set entire TCCR2A register to 0
   TCCR2B = 0;// same for TCCR2B
   TCNT2  = 0;//initialize counter value to 0
@@ -23,20 +34,20 @@ cli();
   TCCR2B |= (1 << CS01) | (1 << CS00);   
   // enable timer compare interrupt
   TIMSK2 |= (1 << OCIE2A);
-sei();
-  //pinMode(8, OUTPUT);
   
-   //pinMode(GSM_Reboot_Pin,OUTPUT);   digitalWrite(GSM_Reboot_Pin, HIGH);//delay(10000);
-   pinMode(S_SerialPin,INPUT);  pinMode(3,OUTPUT);
-   //mySerial.begin(9600);
-   Serial.begin(9600);
-    pinMode(13, OUTPUT);
-     cli();
-     New_Setting();sei();
-     pinMode(13,OUTPUT);
+  pinMode(GSM_Reboot_Pin,OUTPUT);   digitalWrite(GSM_Reboot_Pin, HIGH);//delay(10000);
+  pinMode(S_SerialPin,INPUT);  pinMode(3,OUTPUT);
 
-  pinMode(ZONE1_PIN, INPUT); pinMode(ZONE2_PIN, INPUT);
-  pinMode(ZONE2_PIN, INPUT); pinMode(ZONE4_PIN, INPUT);
+  pinMode(ZONE1_PIN,INPUT);
+  pinMode(ZONE2_PIN,INPUT);
+  pinMode(ZONE3_PIN,INPUT);
+  pinMode(ZONE4_PIN,INPUT);
+  mySerial.begin(9600);
+  pinMode(13, OUTPUT);
+     cli();
+     New_Setting();
+
+     sei();
 
 }
 
@@ -97,7 +108,7 @@ else System_Enable_Disable = 0x31;
   Read = EEPROM.read(249);if(Read == Enable | Read == Disable) call_ED = Read;  
   Read = EEPROM.read(250);if(Read > 0  && Read < 255 ) SMS_RepetationT = Read;
 
- //uart_send_EEPROM();
+ uart_send_EEPROM();
 
 csc_cnt=100;
 for (i=0;i<100;i++) datastr[i]=0;

@@ -3,84 +3,58 @@
   //**************************************************************//
  //********************* Timer 1 Interrupt **********************//
 //**************************************************************//
-char flagV=0,toggle0=1 ;
-
-ISR(TIMER2_COMPA_vect){//timer0 interrupt 2kHz toggles pin 8
-//generates pulse wave of frequency 2kHz/2 = 1kHz (takes two cycles for full wave- toggle high then toggle low)
-    cnt++;
-
-
-  if(bitRead(alert_status_flag, FIRST_BIT)){
-    if(digitalRead(ZONE1_PIN))
-      zone1_up_debounce++;
-    else if(!digitalRead(ZONE1_PIN))
-      zone1_down_debounce++; 
-  }
-  if(bitRead(alert_status_flag, SECOND_BIT)){
-
-    if(digitalRead(ZONE2_PIN))
-      zone2_up_debounce++; 
-    else if(!digitalRead(ZONE2_PIN))
-      zone2_down_debounce++;
-  }
-
-  if(bitRead(alert_status_flag, THIRD_BIT)){
-    if(digitalRead(ZONE3_PIN))
-      zone3_up_debounce++; 
-    else if(!digitalRead(ZONE3_PIN))
-      zone3_down_debounce++;
-  }
-  
-  if(bitRead(alert_status_flag, FOURTH_BIT)){
-
-    if(digitalRead(ZONE4_PIN))
-      zone4_up_debounce++; 
-    else if(!digitalRead(ZONE4_PIN))
-      zone4_down_debounce++;
-  }
-
-}
-
-ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
+unsigned int cont_v=0;
+ISR(TIMER2_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
   //generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
-  //TCNT1 = 63535;
-  Touch_1Sec=0;
-  /*
-  if(flagV == 0){
-    digitalWrite(8, HIGH);
-    flagV++;
-  }
-  else if(flagV == 1){
-    digitalWrite(8, LOW);
-    flagV=0;
-  }
-  */
-  
-  
-
-  
-  /*one_sec++;Packet_Send_Time++;
-  Repeat_SMS_Reply++;
-  if(Repeat_SMS_Reply>0)Repeat_SMS_Reply=70;
  
-  if(one_sec >59){ one_sec =0; All_Time++; thisRUN_Time++;}
-  */
+   //digitalWrite(13, digitalRead(13) ^ 1);
+  if(cont_v > 10){
+    if(zone1_in_alert){
+      if(digitalRead(ZONE1_PIN))
+          zone1_up_debounce++;
+      else if(!digitalRead(ZONE1_PIN))
+        zone1_down_debounce++; 
+    }
+    if(zone2_in_alert){
+
+      if(digitalRead(ZONE2_PIN))
+        zone2_up_debounce++; 
+      else if(!digitalRead(ZONE2_PIN))
+        zone2_down_debounce++;
+    }
+
+    if(zone3_in_alert){
+      if(digitalRead(ZONE3_PIN))
+        zone3_up_debounce++; 
+      else if(!digitalRead(ZONE3_PIN))
+        zone3_down_debounce++;
+    }
+    
+    if(zone4_in_alert){
+      if(digitalRead(ZONE4_PIN))
+        zone4_up_debounce++; 
+      else if(!digitalRead(ZONE4_PIN))
+        zone4_down_debounce++;
+    }
+    cont_v=0;
+  }cont_v++;
 }
 
   //**************************************************************//
  //**************************** GSM_AT  *************************//
 //**************************************************************//
-/*       datastr[dat_cnt] = UDR0;
+ISR(USART_RX_vect)  {
+       datastr[dat_cnt] = UDR0;
        if(datastr[dat_cnt]>0x1 && datastr[dat_cnt]<250)
          dat_cnt++;
 
        if(dat_cnt>=98)dat_cnt=96; 
 }
 
-*/
-void uart_send(char dat) {
-  Serial.write(dat);
-                            
+
+void uart_send(unsigned char dat) {
+ while(! (UCSR0A & ( 1 << UDRE0))  );  // until dararegister is NOT empty 
+ UDR0 = dat;                           
 }
 
 unsigned char uart_read() {
@@ -93,7 +67,7 @@ void print_strU0(char *str)
 {int i;
       for(i=0;str[i]&& i<240;i++)
       if(str[i]> 0x01 && str[i] < 250)
-       Serial.write(str[i]);
+       uart_send(str[i]);
 }
   /***************************************************************************/
  /***************************************************************************/
@@ -102,10 +76,10 @@ void print_StrU0(String str)
 {int i;
       for(i=0;str[i]&& i<240;i++)
       if(str[i]> 0x01 && str[i] < 250)
-       Serial.write(str[i]);
+       uart_send(str[i]);
 }  
 void UART0_NL(void){
-Serial.println("");
+uart_send(10);uart_send(13);
 }
   /***************************************************************************/
  /***************************************************************************/

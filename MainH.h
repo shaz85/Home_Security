@@ -13,26 +13,19 @@
 
 #define DHTPIN 13 
 #define S_SerialPin 2
-
-#define ZONE1_PIN 2
-#define ZONE2_PIN 3
-#define ZONE3_PIN 7
-#define ZONE4_PIN 12
-
-
-
-
-char AT_cmd[4]="AT\r";
-char get_strUart2[30], get_strUart2Cnt=0;
-
-unsigned char Zone1_Prev=200, Zone2_Prev=200, Zone3_Prev=200, Zone4_Prev=200;
-unsigned char Zone5_Prev=200, Zone6_Prev=200, Zone7_Prev=200, Zone8_Prev=200;
  
-char Zone1_Status = 0, Zone2_Status = 0, Zone3_Status = 0, Zone4_Status = 0;
-char Zone5_Status = 0, Zone6_Status = 0, Zone7_Status = 0, Zone8_Status = 0;
+ char Zone1_Pin = 0, Zone2_Pin = 1, Zone3_Pin = 2 ;
+ char Zone4_Pin = 3, Zone5_Pin = 4, Zone6_Pin = 5 ;
+ char Zone7_Pin = 6, Zone8_Pin = 7;
+ char AT_cmd[6]="AT\r";
+  char get_strUart2[30], get_strUart2Cnt=0;
 
-unsigned int zone1_up_debounce = 0 , zone2_up_debounce = 0 , zone3_up_debounce = 0, zone4_up_debounce = 0;
-unsigned int zone1_down_debounce = 0 , zone2_down_debounce = 0 , zone3_down_debounce = 0, zone4_down_debounce = 0;
+  unsigned char Zone1_Prev=200, Zone2_Prev=200, Zone3_Prev=200, Zone4_Prev=200;
+  unsigned char Zone5_Prev=200, Zone6_Prev=200, Zone7_Prev=200, Zone8_Prev=200;
+ 
+ char Zone1_Status = 0, Zone2_Status = 0, Zone3_Status = 0, Zone4_Status = 0;
+ char Zone5_Status = 0, Zone6_Status = 0, Zone7_Status = 0, Zone8_Status = 0;
+ 
 
  
 char  str_clearF=0;
@@ -40,21 +33,21 @@ unsigned char Door_closed=0x30,Door_Open=0x31;
 char Open_str[6]="Open", Colse_str[10]="Closed";
 char Door_str[10] = " Door is ";
 
-char Buzzer_ON_1 = 21;
-char Buzzer_ON_2 =5;
-
-int Red_led = 34;
-int Green_led = 36;
+    char Buzzer_ON_1 = 21;
+    char Buzzer_ON_2 =5;
+    
+    int Red_led = 34;
+    int Green_led = 36;
     
     
-long All_Time=0, thisRUN_Time=0;
-long Temp;
-float bv_temp;
+    long All_Time=0, thisRUN_Time=0;
+    long Temp;
+    float bv_temp;
 int len;    
 
 
-unsigned char read_d;
-unsigned int one_sec=0;
+    unsigned char read_d;
+    unsigned int one_sec=0;
 
 char one='1', two='2', three='3',four='4', five='5', six='6', seven='7', eight='8', nine='9', zero='0';
 //Functions
