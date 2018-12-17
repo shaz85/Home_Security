@@ -4,7 +4,7 @@ void Battery_Voltage(void){
  
 }
 
- unsigned char message_send_zones=0;
+unsigned char message_send_zones=0;
 unsigned char stability_sensor_cnt = 60;
 unsigned char zone1_alert_send = 0, zone2_alert_send = 0, zone3_alert_send = 0, zone4_alert_send = 0;
   //**************************************************************//
@@ -40,7 +40,7 @@ void sensors_status_check(void){
     if(Sensor_2E == 0x31 && zone2_up_debounce > stability_sensor_cnt && digitalRead(ZONE2_PIN)){
       zone2_up_debounce = stability_sensor_cnt;
       zone2_down_debounce = 0;
-      if(zone2_in_alert && zone1_alert_send){  
+      if(zone2_in_alert && zone2_alert_send){  
         zone2_in_alert = 0; print_strU0("Door2 open \r\n");   
         Send_SMS_AlertsP2(2); Zone2_Status=0; if(call_ED== Enable) Security_call();
         zone2_in_alert = 1; zone2_alert_send =0;               
@@ -60,9 +60,9 @@ void sensors_status_check(void){
     if(Sensor_3E == 0x31 && zone3_up_debounce > stability_sensor_cnt && digitalRead(ZONE3_PIN)){
       zone3_up_debounce = stability_sensor_cnt;
       zone3_down_debounce = 0;
-      if(zone3_in_alert && zone1_alert_send){  
+      if(zone3_in_alert && zone3_alert_send){  
         zone3_in_alert = 0; print_strU0("Door3 open \r\n"); 
-        Send_SMS_AlertsP2(2); Zone3_Status=0; if(call_ED== Enable) Security_call();
+        Send_SMS_AlertsP2(3); Zone3_Status=0; if(call_ED== Enable) Security_call();
         zone3_in_alert = 1; zone3_alert_send =0;              
       }
     }
@@ -80,7 +80,7 @@ void sensors_status_check(void){
       zone4_down_debounce = 0;
       if(zone4_in_alert && zone4_alert_send){
         zone4_in_alert = 0;print_strU0("Door4 open \r\n");
-        Send_SMS_AlertsP2(2); Zone4_Status=0; if(call_ED== Enable) Security_call();
+        Send_SMS_AlertsP2(4); Zone4_Status=0; if(call_ED== Enable) Security_call();
         zone4_in_alert = 1; zone4_alert_send =0;
       }
     }

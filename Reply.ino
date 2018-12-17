@@ -4,60 +4,60 @@
 //**************************************************************//
 
 void new_Line(void){print_strU0("\r");}
- void Send_SMS(unsigned char val){
-      unsigned char temp[4],temp1[7],const_arr;
-      unsigned int i,j,tempDays,tempMinute, tempHours;
-    if(str_clearF!=1)
-     GSM_str_clear();
-      //UART0_NL();
-      SoftUartNL();
-      //Soft_printstr("R");
-      delay(10);Soft_printstr(ATCMGF);delay(10);
-      //for(i=0;i<100&ATCSCS[i]!=0;i++)
-        //  uart_send( ATCSCS[i]); 
-      delay(10);
-       Soft_printstr(ATCMGS);Soft_uart_send('"');
-       Soft_printstr(M_Recv_numb);
-       Soft_uart_send('"');SoftUartNL();delay(1800);
+
+void Send_SMS(unsigned char val){
+  unsigned char temp[4],temp1[7],const_arr;
+  unsigned int i,j,tempDays,tempMinute, tempHours;
+  if(str_clearF!=1)
+    GSM_str_clear();
+  //UART0_NL();
+  SoftUartNL();
+  //Soft_printstr("R");
+  delay(10);Soft_printstr(ATCMGF);delay(10);
+  //for(i=0;i<100&ATCSCS[i]!=0;i++)
+  //  uart_send( ATCSCS[i]); 
+  delay(10);
+  Soft_printstr(ATCMGS);Soft_uart_send('"');
+  Soft_printstr(M_Recv_numb);
+  Soft_uart_send('"');SoftUartNL();delay(1800);
 
  /***************************************************************************/
-   if(val == 1){  //Send Save Number in EEPROM cmd 1
-      for(i=0;i<5;i++){
-         for(j=0;j<13;j++){
-            if((PhoneNOList[i][j]>=0x30&&PhoneNOList[i][j]<=0x39)|PhoneNOList[i][j]=='+')
-                Soft_uart_send(PhoneNOList[i][j]);
-                //Delay_us(1);
-               } Soft_uart_send(',');
-       }saved_EppromV=12;  
-       }
+  if(val == 1){  //Send Save Number in EEPROM cmd 1
+    for(i=0;i<5;i++){
+      for(j=0;j<13;j++){
+        if((PhoneNOList[i][j]>=0x30&&PhoneNOList[i][j]<=0x39)|PhoneNOList[i][j]=='+')
+          Soft_uart_send(PhoneNOList[i][j]);           
+      } Soft_uart_send(',');
+    }saved_EppromV=12;  
+  }
  
  /***************************************************************************/
   //Alert Message for any sensor out of range
-       else if (val == 2){   //print_strU0("The System is ");
-             if(System_Enable_Disable == 0x31){len = strlen_P(SystemEn);
-                  for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (SystemEn+pV));
-                   // Door_Sensor_Status(2); 
-                    DoorOpened(); saved_EppromV = 100;
-              }
-             else{len = strlen_P(SystemEnDis);
-                  for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (SystemEnDis+pV));}
+  else if (val == 2){   //print_strU0("The System is ");
+    if(System_Enable_Disable == 0x31){len = strlen_P(SystemEn);
+      for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (SystemEn+pV));
+       // Door_Sensor_Status(2); 
+        DoorOpened(); saved_EppromV = 100;
+    }
+    else{len = strlen_P(SystemEnDis);
+      for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (SystemEnDis+pV));}
+
+    Zone1_Status = 0; Zone2_Status = 0; Zone3_Status = 0; Zone4_Status = 0;
+    Zone5_Status = 0; Zone6_Status = 0; Zone7_Status = 0; Zone8_Status = 0;            
              
-             Zone1_Status = 0; Zone2_Status = 0; Zone3_Status = 0; Zone4_Status = 0;
-             Zone5_Status = 0; Zone6_Status = 0; Zone7_Status = 0; Zone8_Status = 0;            
-             
-          }
+  }
  /***************************************************************************/
   //Alert Message for any sensor out of range
-       else if (val == 3){   
-            len = strlen_P(Call_ED);     
-           for(pV=0;pV<100 &pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Call_ED+pV));
-         //for(i=0;i<100&Call_ED[i]!=0;i++) uart_send( Call_ED[i]); //print_strU0("Call E/D Repetation ");Call_ED
-           Soft_uart_send(call_ED);
-           Soft_uart_send(',');
-           
-           Byte12_str =  String(SMS_RepetationT);
-              Byte12_str.toCharArray(Array12B,11);Soft_printstr(Array12B);  
-            }            
+  else if (val == 3){   
+    len = strlen_P(Call_ED);     
+    for(pV=0;pV<100 &pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Call_ED+pV));
+    //for(i=0;i<100&Call_ED[i]!=0;i++) uart_send( Call_ED[i]); //print_strU0("Call E/D Repetation ");Call_ED
+    Soft_uart_send(call_ED);
+    Soft_uart_send(',');
+
+    Byte12_str =  String(SMS_RepetationT);
+    Byte12_str.toCharArray(Array12B,11);Soft_printstr(Array12B);  
+  }            
  /***************************************************************************/
   //Alert Message for any sensor out of range
        /*else if (val == 4){ 
@@ -67,92 +67,87 @@ void new_Line(void){print_strU0("\r");}
             }  */          
  /***************************************************************************/
      
-    else if (val == 5){ for(i=0;i<200;i++)Message[i]=0;
-               strncpy(Message,gsm_data,12);
-            Soft_printstr(Message);
-           }
+  else if (val == 5){ for(i=0;i<200;i++)Message[i]=0;
+    strncpy(Message,gsm_data,12);
+    Soft_printstr(Message);
+  }
  /***************************************************************************/
        
-       else if (val== 6 |val== 7 ){ //delay(2000);
-              len = strlen_P(SysAlerts);     
-             for(pV=0;pV<100 &pV<len;pV++) Soft_uart_send( pgm_read_byte_near (SysAlerts+pV));
-              // for(i=0;i<100&SysAlerts[i]!=0;i++) uart_send( SysAlerts[i]);
-               //print_strU0("SysAlerts = ");
-               if(Global_Alerts_ED==Enab)
-                  Soft_uart_send('E');
-               else Soft_uart_send('D');
-           }
+  else if (val== 6 |val== 7 ){ //delay(2000);
+    len = strlen_P(SysAlerts);     
+    for(pV=0;pV<100 &pV<len;pV++) Soft_uart_send( pgm_read_byte_near (SysAlerts+pV));
+    // for(i=0;i<100&SysAlerts[i]!=0;i++) uart_send( SysAlerts[i]);
+    //print_strU0("SysAlerts = ");
+    if(Global_Alerts_ED==Enab)
+      Soft_uart_send('E');
+    else Soft_uart_send('D');
+  }
  /***************************************************************************/
        //Thresh hold  for humidity and Temperature cmd 2
-       else if (val== 8 ){ //delay(2000);
-              len = strlen_P(Sens_EnaArr);
-                for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Sens_EnaArr+pV));
-                                  
-               Send_SMS_Phase2(1);
-           }
+  else if (val== 8 ){ //delay(2000);
+    len = strlen_P(Sens_EnaArr);
+    for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Sens_EnaArr+pV));
+                      
+    Send_SMS_Phase2(1);
+  }
           
  /***************************************************************************/
        //Thresh hold  for humidity and Temperature cmd 2
-       else if (val == 9){ //delay(2000);
-             len = strlen_P(Reboot);
-                for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Reboot+pV));
-             
-             //print_strU0("Reboot");
-
-           }
+  else if (val == 9){ //delay(2000);
+    len = strlen_P(Reboot);
+    for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Reboot+pV));
+    //print_strU0("Reboot");
+  }
         
-
-/***************************************************************************/
+  /***************************************************************************/
             //Alert Message for any sensor out of range
-       else if (val == 11){ //if(Message[++jj]=='1')
-             // Soft_printstr("Reply\r");
-              Soft_printstr(gsm_data);
-            }
+  else if (val == 11){ //if(Message[++jj]=='1')
+    // Soft_printstr("Reply\r");
+    Soft_printstr(gsm_data);
+  }
  /***************************************************************************/
        //Thresh hold  for humidity and Temperature cmd 2
-       else if (val == 12){ //delay(2000);j=0;
-               Status_Message();
-              //Soft_printstr("Shaz is great");
-              saved_EppromV = 100;
+  else if (val == 12){ //delay(2000);j=0;
+    Status_Message();
+    //Soft_printstr("Shaz is great");
+    saved_EppromV = 100;
            
-         }
- /***************************************************************************/
+  }
+  /***************************************************************************/
        //Thresh hold  for humidity and Temperature cmd 2
-       else if (val == 13){ 
-          String_send();
-           
-           
-         }         
+  else if (val == 13){ 
+    String_send();  
+  }         
 
-/***************************************************************************/
+  /***************************************************************************/
             //Alert Message for any sensor out of range
      /*  else if (val == 14){ //if(Message[++jj]=='1')
               //print_strU0("Reply\r");
               print_strU0(gsm_data);
             }*/
-/***************************************************************************/
-            //Alert Message for any sensor out of range
-       else if (val == 15){
-             
-       }      
+  /***************************************************************************/
+      //Alert Message for any sensor out of range
+  else if (val == 15){
+       
+  }      
  /***************************************************************************/
-       //Off set and Wapda and DG and Power_Failure_Time setting
-      else if (val==16){
-             uart_send_EEPROM();
-          }
+  //Off set and Wapda and DG and Power_Failure_Time setting
+  else if (val==16){
+    uart_send_EEPROM();
+  }
 
  /***************************************************************************/
  /***************************************************************************/
-       delay(10);//GSM_str_clear();
-     Soft_uart_send(CTRL_Z);SoftUartNL();          
-                   print_strU0("SSS\r");
-          for(i=0;i<5;i++){  
-            Check_RecievedSMS(2); 
-            if((strstr(gsm_data, "+CMGS:"))!=0)break;
-          }  
-       if(saved_EppromV == 100){saved_EppromV= 99;  delay(8000);}    
-           print_strU0(gsm_data);print_strU0("SSS\r");
-           //SoftUartNL();Soft_printstr("R-");
+  delay(10);//GSM_str_clear();
+  Soft_uart_send(CTRL_Z);SoftUartNL();          
+           print_strU0("SSS\r");
+  for(i=0;i<5;i++){  
+    Check_RecievedSMS(10); 
+    if((strstr(gsm_data, "+CMGS:"))!=0)break;
+  }  
+  if(saved_EppromV == 100){saved_EppromV= 99;  delay(8000);}    
+  print_strU0(gsm_data);print_strU0("SSS\r");
+   //SoftUartNL();Soft_printstr("R-");
            
  }
  

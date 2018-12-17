@@ -37,24 +37,24 @@ int call_ED=0x30,SMS_RepetationT=1;
 unsigned char Zone1_Rep = 1 , Zone2_Rep = 1 , Zone3_Rep = 1 ,Zone4_Rep = 1 ;
 unsigned char Zone5_Rep = 1 , Zone6_Rep = 1 , Zone7_Rep = 1 ,Zone8_Rep = 1 ;
 
- char PhoneNOList[5][15];
- char System_Enable_Disable  =0x30;
- 
- //char DynamicIP[40];
- char IMEI[3]="12";
- char datastr[100];
- int dat_cnt=0;
- 
- char Enab = 0x31;
- 
- char ATCMGF[12]="AT+CMGF=1\r";
- char ATCMGS[10]="AT+CMGS=";
+char PhoneNOList[5][15];
+char System_Enable_Disable  =0x30;
 
- char Password[7]="Mega>",Master[15]="+923347455997";
- char Master1[15]="+923096891878";
- char M_Recv_numb[15];
- char CTRL_Z=26;
- char Volt_Var[7];
+//char DynamicIP[40];
+char IMEI[3]="12";
+char datastr[100];
+int dat_cnt=0;
+
+char Enab = 0x31;
+
+char ATCMGF[12]="AT+CMGF=1\r";
+char ATCMGS[10]="AT+CMGS=";
+
+char Password[7]="Mega>",Master[15]="+923347455997";
+char Master1[15]="+923096891878";
+char M_Recv_numb[15];
+char CTRL_Z=26;
+char Volt_Var[7];
  
  //Init923347455997,+923059784266,+923347455997,+923096891878,,
 int Packet_Send_Time=60;
