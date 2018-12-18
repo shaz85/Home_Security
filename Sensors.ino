@@ -1,8 +1,3 @@
-char Alarm=0;
-
-void Battery_Voltage(void){
- 
-}
 
 unsigned char message_send_zones=0;
 unsigned char stability_sensor_cnt = 60;
@@ -92,14 +87,8 @@ void sensors_status_check(void){
     }
   
   }
-  else {
-         // digitalWrite(Buzzer_ON_1, LOW); Alarm = 0;digitalWrite(Red_led, LOW);
-      
-     }
-
+  
 }
-
-
   //**************************************************************//
  //********************* Motion_and_Smoke  **********************//
 //**************************************************************//

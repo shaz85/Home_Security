@@ -23,6 +23,7 @@ char Debug_Ms = 0x31;
 #define ZONE2_PIN 3
 #define ZONE3_PIN 7
 #define ZONE4_PIN 12
+char debug_enable = 0x31;
 
 
 unsigned int zone1_up_debounce = 0 , zone2_up_debounce = 0 , zone3_up_debounce = 0, zone4_up_debounce = 0;

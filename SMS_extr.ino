@@ -36,57 +36,52 @@ void Message_extraction(void){
      
     
     for(jj=0;Message[jj]!=0&&jj<150;jj++){
-      if(Message[jj]=='M'&&Message[jj+1]=='N'){//Phone Number Recieved for Alerts
+      if(Message[jj]=='C'&&Message[jj+1]=='1'){//Phone Number Recieved for Alerts
           phone_numbers_Read();
           Send_SMS(1);break;
       }
       /******************************************************************/
                     //Android and Non Android ALerts Enabling
         
-      if(Message[jj]=='A'&& Message[jj+1]=='E'){ jj+=2; 
+      if(Message[jj]=='C'&& Message[jj+1]=='2'){ jj+=3; 
         if(Message[jj]==Enab) System_Enable_Disable = 0x31;
         else System_Enable_Disable  = 0x30;EEPROM.write(254,System_Enable_Disable );
+        jj +=2;
+        if(Message[jj]==Enab) debug_enable = 0x31;
+        else if(Message[jj]==0x30) debug_enable  = 0x30;EEPROM.write(234, debug_enable );
+        
         Send_SMS(2);
         if(valid_number!=1){delay(5000);  SMS_Del_All(); Send_SMS_AlertsP2('A');}                            
         break;
       }
       /***************************************************************************/
                     //SMS alerts repetation for all kind of alerts
-      if(Message[jj]=='A' && Message[jj+1]=='R'){ jj+=2;
+      if(Message[jj]=='C' && Message[jj+1]=='3'){ jj +=3;
         SMS_Repetation(jj);
         Send_SMS(3);     break;
       }
 
       /******************************************************************/
-      if(Message[jj]=='S'&&Message[jj+1]=='Q'){  jj++;GSM_str_clear();str_clearF=1;   // Singal Level Checking for Module
+      if(Message[jj]=='C'&&Message[jj+1]=='4'){  jj++;GSM_str_clear();str_clearF=1;   // Singal Level Checking for Module
         Soft_printstr("AT+CSQ\r");
         Check_RecievedSMS(2);   Send_SMS(5);     
         break;
       }       
-      /***************************************************************************/
-      if(Message[jj]=='S' && (Message[jj+1]=='E' | Message[jj+1]=='D')){ 
-        if(Message[jj+1]=='D'){  Global_Alerts_ED =0x30; //Global Alerts Status Disable
-          EEPROM.write(119,0x30); Send_SMS(6);                               
-        }
-        else if(Message[jj+1]=='E'){  Global_Alerts_ED = Enab; //Global Alerts Status Enable
-          EEPROM.write(119,Enab);  Send_SMS(7);  
-        }
-        break;
-      }
+      
         
       /***************************************************************************/
                   //Individual Sensor Alerts enable or disable
-      if(Message[jj]=='s' && Message[jj+1]=='e'){jj++;  Sensor_Enable_disble(jj);
+      if(Message[jj]=='C' && Message[jj+1]=='5'){jj +=3;  Sensor_Enable_disble(jj);
         Send_SMS(8);
         break;
       }       
          /******************************************************************/
-      if(Message[jj] == 'R' && Message[jj+1] == 'B'){  Send_SMS(9);delay(5000); //Recieve Reboot Command
+      if(Message[jj] == 'C' && Message[jj+1] == '6'){  Send_SMS(9);delay(5000); //Recieve Reboot Command
         Reboot_function(2);                   break;
       }
 
       /***************************************************************************/
-      if(Message[jj] == 'R' && Message[jj+1] == 'C'){jj++; Balance_AT_cmd(jj); //Recieve command to get Remaining SMS and Balance
+      if(Message[jj] == 'C' && Message[jj+1] == '7'){jj++; Balance_AT_cmd(jj); //Recieve command to get Remaining SMS and Balance
         Soft_printstr(ATCMGF);delay(1);          Soft_printstr(ATCMGL_ALL);
         GSM_str_clear(); 
         Check_RecievedSMS(4); str_clearF=1;   
@@ -95,7 +90,7 @@ void Message_extraction(void){
       }
       
       /******************************************************************/
-      if(Message[jj]=='G'&&Message[jj+1]=='S'){   
+      if(Message[jj]=='C'&&Message[jj+1]=='8'){   
         Send_SMS(12);//Status of the system by sms
         break;
       }
@@ -170,8 +165,7 @@ void phone_numbers_Read(void){
 //**************************************************************//
 
 void Sensor_Enable_disble(unsigned char addres){
-  addres++;
-
+  
   Sensor_1E = Message[addres++];  EEPROM.write(224,Sensor_1E);
   Sensor_2E = Message[addres++];  EEPROM.write(225,Sensor_2E);
   Sensor_3E = Message[addres++];  EEPROM.write(226,Sensor_3E);

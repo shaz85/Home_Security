@@ -151,64 +151,61 @@ void Send_SMS(unsigned char val){
            
  }
  
-   /***************************************************************************/
   /***************************************************************************/
  /***************************************************************************/
+/***************************************************************************/
  
- void Send_SMS_Phase2(unsigned char val){
+void Send_SMS_Phase2(unsigned char val){
     
 
-      Soft_uart_send(Sensor_1E);Soft_uart_send(Sensor_2E);
-      Soft_uart_send(Sensor_3E);Soft_uart_send(Comma1);
-      
-      Soft_uart_send(Sensor_4E);Soft_uart_send(Sensor_5E);
-      Soft_uart_send(Sensor_6E);Soft_uart_send(Comma1);
-      
-      Soft_uart_send(Sensor_7E);Soft_uart_send(Sensor_8E);
-      //uart_send(Sensor_9E);uart_send(Comma1);
-      
-      //uart_send(Sensor_10E);
- }
+  Soft_uart_send(Sensor_1E);Soft_uart_send(Sensor_2E);
+  Soft_uart_send(Sensor_3E);Soft_uart_send(Comma1);
 
-   /***************************************************************************/
+  Soft_uart_send(Sensor_4E);Soft_uart_send(Sensor_5E);
+  Soft_uart_send(Sensor_6E);Soft_uart_send(Comma1);
+
+  Soft_uart_send(Sensor_7E);Soft_uart_send(Sensor_8E);
+  //uart_send(Sensor_9E);uart_send(Comma1);
+
+  //uart_send(Sensor_10E);
+}
+
   /***************************************************************************/
  /***************************************************************************/
- void Timeprint(unsigned int value){
+/***************************************************************************/
+void Timeprint(unsigned int value){
   Byte12_str =  String(value);
   Byte12_str.toCharArray(Array12B,11);
   print_strU0(Array12B);
   print_strU0(",");
-
 }
    /***************************************************************************/
   /***************************************************************************/
  /***************************************************************************/
 void Status_Message(void ){
-
-
    if(Sensor_1E == 0x31){
-      Soft_printstr(Store_str);             Soft_uart_send(one); Soft_printstr(Door_str);
-      if(Zone1_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+      Soft_printstr(Store_str);          Soft_uart_send(one); Soft_printstr(Door_str);
+      if(!digitalRead(ZONE1_PIN))        Soft_printstr(Colse_str);
       else Soft_printstr(Open_str);
             SoftUartNL();}
  /***************************************************************************/
    if(Sensor_2E == 0x31){   
-      Soft_printstr(Store_str);             Soft_uart_send(two); Soft_printstr(Door_str);
-      if(Zone2_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+      Soft_printstr(Store_str);          Soft_uart_send(two); Soft_printstr(Door_str);
+      if(!digitalRead(ZONE2_PIN))        Soft_printstr(Colse_str);
       else Soft_printstr(Open_str);
             SoftUartNL();
    }        
  /***************************************************************************/
    if(Sensor_3E == 0x31){
-      Soft_printstr(Store_str);             Soft_uart_send(three); Soft_printstr(Door_str);
-      if(Zone3_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+      Soft_printstr(Store_str);          Soft_uart_send(three); Soft_printstr(Door_str);
+      if(!digitalRead(ZONE3_PIN))        Soft_printstr(Colse_str);
       else Soft_printstr(Open_str);
             SoftUartNL();
    }        
  /***************************************************************************/
    if(Sensor_4E == 0x31){   
-      Soft_printstr(Store_str);             Soft_uart_send(four); Soft_printstr(Door_str);
-      if(Zone4_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+      Soft_printstr(Store_str);          Soft_uart_send(four); Soft_printstr(Door_str);
+      if(!digitalRead(ZONE4_PIN))        Soft_printstr(Colse_str);
       else Soft_printstr(Open_str);
             SoftUartNL();
    }       
@@ -307,24 +304,24 @@ void DoorOpened(void){
 
 
 void Service_provoider(unsigned char recv){
-      SMS_Del_All();
-      //delay(1000);//asm clrwdt
+  SMS_Del_All();
+  //delay(1000);//asm clrwdt
 
-      Soft_printstr(ATCMGF); delay(100);
-      Soft_printstr(ATCMGS);Soft_uart_send('"');
-      GSM_str_clear();  
-      for(;recv<250;recv++){
-          if(Message[recv]=='!')break;
-          else{ uart_send(Message[recv]); Soft_uart_send(Message[recv]);}
-       }               
-       Soft_uart_send('"');SoftUartNL();delay(1000);recv++;
-     for(;recv<250;recv++){
-          if(Message[recv]=='!')break;
-          else{ uart_send(Message[recv]); Soft_uart_send(Message[recv]);}
-       }                //Soft_uart_send('$');
-       
-      Soft_uart_send(CTRL_Z);
-      delay(12000);//asm clrwdt
+  Soft_printstr(ATCMGF); delay(100);
+  Soft_printstr(ATCMGS);Soft_uart_send('"');
+  GSM_str_clear();  
+  for(;recv<250;recv++){
+    if(Message[recv]=='!')break;
+    else{ uart_send(Message[recv]); Soft_uart_send(Message[recv]);}
+  }               
+   Soft_uart_send('"');SoftUartNL();delay(1000);recv++;
+  for(;recv<250;recv++){
+    if(Message[recv]=='!')break;
+    else{ uart_send(Message[recv]); Soft_uart_send(Message[recv]);}
+   }                //Soft_uart_send('$');
+   
+  Soft_uart_send(CTRL_Z);
+  delay(12000);//asm clrwdt
   Soft_printstr(ATCMGF);delay(1);
   Soft_printstr(ATCMGL_ALL);delay(1); GSM_str_clear();
 
@@ -336,25 +333,25 @@ void Service_provoider(unsigned char recv){
 //**************************************************************//
 
 void Balance_AT_cmd(unsigned char recv){
-      unsigned char val,i=0;
+  unsigned char val,i=0;
 
-      GSM_str_clear();val = recv+1;
-      SMS_Del_All();//UART0_NL();
-      
-      Soft_printstr(ATCMGF);delay(30);//Soft_uart_send('$');
-       //UART1_Write_Text("AT+CUSD=1,\"*124#\",15\r");
-       for(;val<250&&Message[val]!=0;val++){
-           if(Message[val]=='!')break;
-           if(Message[val]>6 && Message[val]<127){
-               Soft_uart_send(Message[val]);
-               //uart_send(Message[val]);
-             }
-       }
+  GSM_str_clear();val = recv+1;
+  SMS_Del_All();//UART0_NL();
+  
+  Soft_printstr(ATCMGF);delay(30);//Soft_uart_send('$');
+   //UART1_Write_Text("AT+CUSD=1,\"*124#\",15\r");
+  for(;val<250&&Message[val]!=0;val++){
+    if(Message[val]=='!')break;
+    if(Message[val]>6 && Message[val]<127){
+      Soft_uart_send(Message[val]);
+      //uart_send(Message[val]);
+    }
+  }
 
-      Soft_printstr("\r"); 
-       
-       delay(8000);
-      // asm clrwdt
+  Soft_printstr("\r"); 
+   
+   delay(8000);
+  // asm clrwdt
 }
 
     //************************************************************//
@@ -364,66 +361,69 @@ void humidity_tempr_threshhold(unsigned char val){
   
      
 
-   }
+}
    
    
- void String_send(void){
-      if(Sensor_1E == 0x31){
-                  Soft_uart_send(one);      Soft_printstr(Door_str);
-      if(Zone1_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();}
- /***************************************************************************/
-   if(Sensor_2E == 0x31){   
-                   Soft_uart_send(two); Soft_printstr(Door_str);
-      if(Zone2_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }        
- /***************************************************************************/
-   if(Sensor_3E == 0x31){
-                 Soft_uart_send(three); Soft_printstr(Door_str);
-      if(Zone3_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }        
- /***************************************************************************/
-   if(Sensor_4E == 0x31){   
-                 Soft_uart_send(four); Soft_printstr(Door_str);
-      if(Zone4_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }       
- /***************************************************************************/
-   if(Sensor_5E == 0x31){   
-                  Soft_uart_send(five); Soft_printstr(Door_str);
-      if(Zone5_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }       
- /***************************************************************************/
-    if(Sensor_6E == 0x31){  
-                   Soft_uart_send(six); Soft_printstr(Door_str);
-      if(Zone6_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-    }       
- /***************************************************************************/
-   if(Sensor_7E == 0x31){  
-                Soft_uart_send(seven); Soft_printstr(Door_str);
-      if(Zone7_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }       
- /***************************************************************************/
+void String_send(void){
+  if(Sensor_1E == 0x31){
+    Soft_uart_send(one);      Soft_printstr(Door_str);
+    if(Zone1_Prev ==  Door_closed)        
+      Soft_printstr(Colse_str);
+    else 
+      Soft_printstr(Open_str);
+    SoftUartNL();
+  }
+  /***************************************************************************/
+  if(Sensor_2E == 0x31){   
+    Soft_uart_send(two); Soft_printstr(Door_str);
+    if(Zone2_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }        
+  /***************************************************************************/
+  if(Sensor_3E == 0x31){
+    Soft_uart_send(three); Soft_printstr(Door_str);
+    if(Zone3_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }        
+  /***************************************************************************/
+  if(Sensor_4E == 0x31){   
+    Soft_uart_send(four); Soft_printstr(Door_str);
+    if(Zone4_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
+  /***************************************************************************/
+  if(Sensor_5E == 0x31){   
+    Soft_uart_send(five); Soft_printstr(Door_str);
+    if(Zone5_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
+  /***************************************************************************/
+  if(Sensor_6E == 0x31){  
+    Soft_uart_send(six); Soft_printstr(Door_str);
+    if(Zone6_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
+  /***************************************************************************/
+  if(Sensor_7E == 0x31){  
+    Soft_uart_send(seven); Soft_printstr(Door_str);
+    if(Zone7_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
+  /***************************************************************************/
   if(Sensor_8E == 0x31){    
-                 Soft_uart_send(eight); Soft_printstr(Door_str);
-      if(Zone8_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
+    Soft_uart_send(eight); Soft_printstr(Door_str);
+    if(Zone8_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+      SoftUartNL();
   }       
  /***************************************************************************/
 
- }   
+}   
 
 

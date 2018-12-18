@@ -97,6 +97,9 @@ void New_Setting(void){
   Read = EEPROM.read(231);if(Read == Enable | Read == Disable) Sensor_8E = Read;
   Read = EEPROM.read(232);if(Read == Enable | Read == Disable) Sensor_9E = Read;
   Read = EEPROM.read(233);if(Read == Enable | Read == Disable) Sensor_10E = Read; 
+  
+  Read = EEPROM.read(234);if(Read == Enable | Read == Disable) debug_enable = Read; 
+
   //Read = EEPROM.read(360); Debug_Ms = Read; 
 
   /***************************************************************************/
@@ -109,6 +112,7 @@ void New_Setting(void){
   uart_send_EEPROM();
 
   csc_cnt=100;
+
   for (i=0;i<100;i++) datastr[i]=0;
   //S SMS_check();
 }
