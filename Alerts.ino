@@ -82,48 +82,48 @@ void Send_SMS_AlertsP2(unsigned char cmd){
           break;
         /******************************************************************/  
         case 1:            //Zone 1
-          Soft_printstr(Store_str);             Soft_uart_send(one);   Soft_printstr(Door_str);
-          Soft_printstr(Open_str);
-           // print_strU0("Store 1 on Fire");
-           break;
+          //Soft_printstr(Store_str);      
+          Soft_printstr(Door_str); Soft_uart_send(one);
+          Soft_printstr(Open_str);           
+          break;
           
            //Zone 2
         /******************************************************************/  
         case 2:
-          Soft_printstr(Store_str);             Soft_uart_send(two);   Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(two);
           Soft_printstr(Open_str);
           break;           
       
         /******************************************************************/       
         case 3:            // Zone 3
-          Soft_printstr(Store_str);             Soft_uart_send(three);  Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(three);
           Soft_printstr(Open_str);
           break;     
         /******************************************************************/       
         case 4:            // Zone 4
-          Soft_printstr(Store_str);             Soft_uart_send(four);  Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(four);
           Soft_printstr(Open_str);
           break;
         /******************************************************************/  
         case 5:            // Zone 5           
-          Soft_printstr(Store_str);             Soft_uart_send(five);  Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(five);
           Soft_printstr(Open_str);
           break; 
 
         /******************************************************************/       
         case 6:            // Zone 6
-          Soft_printstr(Store_str);             Soft_uart_send(six);  Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(six);
           Soft_printstr(Open_str);
           break;
         /******************************************************************/  
         case 7:            // Zone 7
-          Soft_printstr(Store_str);             Soft_uart_send(seven);  Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(seven);
           Soft_printstr(Open_str);
           break;
 
         /******************************************************************/       
         case 8:            // Zone 8
-          Soft_printstr(Store_str);             Soft_uart_send(eight);  Soft_printstr(Door_str);
+          Soft_printstr(Door_str);  Soft_uart_send(eight);
           Soft_printstr(Open_str);
           break;
         /******************************************************************/  

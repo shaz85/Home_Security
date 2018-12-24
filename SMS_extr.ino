@@ -1,11 +1,9 @@
 
 char valid_number=0;
 
-
-
-   //*************************************************************//
-  //*********************** Message Extration  *******************//
-//**************************************************************//
+  //*************************************************************//
+ //*********************** Message Extration  ******************//
+//*************************************************************//
 void Message_extraction(void){
 
   unsigned int i,jj,dd, char_to_int;
@@ -81,10 +79,12 @@ void Message_extraction(void){
       }
 
       /***************************************************************************/
-      if(Message[jj] == 'C' && Message[jj+1] == '7'){jj++; Balance_AT_cmd(jj); //Recieve command to get Remaining SMS and Balance
+      if(Message[jj] == 'C' && Message[jj+1] == '7'){jj++; 
+        GSM_str_clear(); Balance_AT_cmd(jj); //Recieve command to get Remaining SMS and Balance
         Soft_printstr(ATCMGF);delay(1);          Soft_printstr(ATCMGL_ALL);
-        GSM_str_clear(); 
-        Check_RecievedSMS(4); str_clearF=1;   
+        
+        Check_RecievedSMS(4); str_clearF=1;
+        print_strU0(gsm_data);   
         Send_SMS(11);
         break;
       }
@@ -97,8 +97,8 @@ void Message_extraction(void){
       
       /***************************************************************************/
       if(Message[jj] == 'G' && Message[jj+1] == 'A'){  
-          Send_SMS(13);//Status of the system by sms
-          break;
+        //Send_SMS(13);//Status of the system by sms
+        break;
       }
       /***************************************************************************/
                     //Serice activation command
@@ -130,14 +130,9 @@ void Message_extraction(void){
   
 }
  
-     //************************************************************//
-  //*******************  Device ID or IMEI  *********************//
+  //************************************************************//
+ //*******************  Phone Numbers Read *********************//
 //**************************************************************//
-
-    //************************************************************//
-  //*******************  Phone Numbers Read *********************//
-//**************************************************************//
-
 
 void phone_numbers_Read(void){
   unsigned char EE1,EEIN,add;
@@ -159,10 +154,9 @@ void phone_numbers_Read(void){
   }
 }
 
-
-    //************************************************************//
-  //******************  NSensor_Enable_disble  ******************//
-//**************************************************************//
+  //************************************************************//
+ //******************  NSensor_Enable_disble  *****************//
+//************************************************************//
 
 void Sensor_Enable_disble(unsigned char addres){
   
@@ -183,18 +177,12 @@ void Sensor_Enable_disble(unsigned char addres){
 
   addres++;
   //Sensor_10E = Message[addres++]; EEPROM.write(233,Sensor_10E);
-
-  //Debug_Ms = Message[addres++]; EEPROM.write(233,Debug_Ms);    
-
 }
-
-
-
-    //************************************************************//
-  //*******************  ZoneTimer_threshold  *********************//
+  //**************************************************************//
+ //*******************  ZoneTimer_threshold  ********************//
 //**************************************************************//
 void ZoneTimer_threshold(unsigned char addres){
-  char data12[6],i; 
+  char data12[6],i;
   int temp;
   for(i=0;i<5;i++){
     if(Message[addres]==','){addres++;break;}
@@ -225,10 +213,9 @@ void ZoneTimer_threshold(unsigned char addres){
   }
    
 }
-
-     //************************************************************//
-  //*******************  ZoneTimer_threshold  *********************//
-//**************************************************************//
+  //************************************************************//
+ //*******************  ZoneTimer_threshold  ******************//
+//************************************************************//
 
 void SMS_Repetation(unsigned char addres){
   char data12[6],i; 
@@ -253,5 +240,3 @@ void SMS_Repetation(unsigned char addres){
     else SMS_RepetationT = 1;
   }
 }
-
-

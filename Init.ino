@@ -36,7 +36,7 @@ void initlization(void){
   TIMSK2 |= (1 << OCIE2A);
   
   pinMode(GSM_Reboot_Pin,OUTPUT);   digitalWrite(GSM_Reboot_Pin, HIGH);//delay(10000);
-  pinMode(S_SerialPin,INPUT);  pinMode(3,OUTPUT);
+  pinMode(3,OUTPUT);
 
   pinMode(ZONE1_PIN,INPUT);
   pinMode(ZONE2_PIN,INPUT);

@@ -116,7 +116,7 @@ void Send_SMS(unsigned char val){
   /***************************************************************************/
        //Thresh hold  for humidity and Temperature cmd 2
   else if (val == 13){ 
-    String_send();  
+    //String_send();  
   }         
 
   /***************************************************************************/
@@ -155,8 +155,7 @@ void Send_SMS(unsigned char val){
  /***************************************************************************/
 /***************************************************************************/
  
-void Send_SMS_Phase2(unsigned char val){
-    
+void Send_SMS_Phase2(unsigned char val){    
 
   Soft_uart_send(Sensor_1E);Soft_uart_send(Sensor_2E);
   Soft_uart_send(Sensor_3E);Soft_uart_send(Comma1);
@@ -183,59 +182,60 @@ void Timeprint(unsigned int value){
   /***************************************************************************/
  /***************************************************************************/
 void Status_Message(void ){
-   if(Sensor_1E == 0x31){
-      Soft_printstr(Store_str);          Soft_uart_send(one); Soft_printstr(Door_str);
-      if(!digitalRead(ZONE1_PIN))        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();}
+  if(Sensor_1E == 0x31){
+    Soft_printstr(Door_str);  Soft_uart_send(one);
+    if(!digitalRead(ZONE1_PIN))        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }
  /***************************************************************************/
-   if(Sensor_2E == 0x31){   
-      Soft_printstr(Store_str);          Soft_uart_send(two); Soft_printstr(Door_str);
-      if(!digitalRead(ZONE2_PIN))        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }        
+  if(Sensor_2E == 0x31){   
+    Soft_printstr(Door_str);  Soft_uart_send(two);
+    if(!digitalRead(ZONE2_PIN))        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }        
  /***************************************************************************/
-   if(Sensor_3E == 0x31){
-      Soft_printstr(Store_str);          Soft_uart_send(three); Soft_printstr(Door_str);
-      if(!digitalRead(ZONE3_PIN))        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }        
+  if(Sensor_3E == 0x31){
+    Soft_printstr(Door_str);  Soft_uart_send(three);
+    if(!digitalRead(ZONE3_PIN))        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }        
  /***************************************************************************/
-   if(Sensor_4E == 0x31){   
-      Soft_printstr(Store_str);          Soft_uart_send(four); Soft_printstr(Door_str);
-      if(!digitalRead(ZONE4_PIN))        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }       
+  if(Sensor_4E == 0x31){   
+    Soft_printstr(Door_str);  Soft_uart_send(four);
+    if(!digitalRead(ZONE4_PIN))        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
  /***************************************************************************/
-   if(Sensor_5E == 0x31){   
-      Soft_printstr(Store_str);             Soft_uart_send(five); Soft_printstr(Door_str);
-      if(Zone5_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }       
+  if(Sensor_5E == 0x31){   
+    Soft_printstr(Door_str);  Soft_uart_send(five);
+    if(Zone5_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
  /***************************************************************************/
-    if(Sensor_6E == 0x31){  
-      Soft_printstr(Store_str);             Soft_uart_send(six); Soft_printstr(Door_str);
-      if(Zone6_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-    }       
+  if(Sensor_6E == 0x31){  
+    Soft_printstr(Door_str);  Soft_uart_send(six);
+    if(Zone6_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
  /***************************************************************************/
-   if(Sensor_7E == 0x31){  
-      Soft_printstr(Store_str);             Soft_uart_send(seven); Soft_printstr(Door_str);
-      if(Zone7_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
-   }       
+  if(Sensor_7E == 0x31){  
+    Soft_printstr(Door_str);  Soft_uart_send(seven);
+    if(Zone7_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
+  }       
  /***************************************************************************/
   if(Sensor_8E == 0x31){    
-      Soft_printstr(Store_str);             Soft_uart_send(eight); Soft_printstr(Door_str);
-      if(Zone8_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-      else Soft_printstr(Open_str);
-            SoftUartNL();
+    Soft_printstr(Door_str);  Soft_uart_send(eight);
+    if(Zone8_Prev ==  Door_closed)        Soft_printstr(Colse_str);
+    else Soft_printstr(Open_str);
+    SoftUartNL();
   }       
  /***************************************************************************/
 //print_strU0("SSS\r");  
@@ -252,55 +252,50 @@ void Status_Message(void ){
 void DoorOpened(void){
    
   if(Zone1_Status == 1 | Zone2_Status == 1 | Zone3_Status == 1 | Zone4_Status == 1 | Zone5_Status == 1 | Zone6_Status == 1 | Zone7_Status == 1 | Zone8_Status == 1  ){
-        UART0_NL(); 
-        len = strlen_P(DoorOpen);
-        for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (DoorOpen+pV));
-     
-       
-       
-       SoftUartNL();
-      if(Zone1_Status == 1 && Sensor_1E == 0x31){
-             Soft_uart_send(one);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();
-          Zone1_Status=0;
-      }
-      if(Zone2_Status == 1 && Sensor_2E == 0x31){
-              Soft_uart_send(two);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();    Zone2_Status=0;
-      }
-      if(Zone3_Status == 1 && Sensor_3E == 0x31){
-             Soft_uart_send(three);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();     Zone3_Status=0;
-      }
-      if(Zone4_Status == 1 && Sensor_4E == 0x31){
-              Soft_uart_send(four);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();    Zone4_Status=0;
-      }
-      if(Zone5_Status == 1 && Sensor_5E == 0x31){
-             Soft_uart_send(five);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();    Zone5_Status=0;
-      }
-      if(Zone6_Status == 1 && Sensor_6E == 0x31){
-             Soft_uart_send(six);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();    Zone6_Status=0;
-      }
-      if(Zone7_Status == 1 && Sensor_7E == 0x31){
-              Soft_uart_send(seven);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();    Zone7_Status=0;
-      }
-      if(Zone8_Status == 1 && Sensor_8E == 0x31){
-              Soft_uart_send(eight);    Soft_printstr(Door_str);
-          Soft_printstr(Open_str);     SoftUartNL();    Zone8_Status=0;
-      }
-   }  
+    UART0_NL(); 
+    len = strlen_P(DoorOpen);
+    for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (DoorOpen+pV));
+
+    SoftUartNL();
+    if(Zone1_Status == 1 && Sensor_1E == 0x31){
+           Soft_uart_send(one);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();
+        Zone1_Status=0;
+    }
+    if(Zone2_Status == 1 && Sensor_2E == 0x31){
+            Soft_uart_send(two);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();    Zone2_Status=0;
+    }
+    if(Zone3_Status == 1 && Sensor_3E == 0x31){
+           Soft_uart_send(three);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();     Zone3_Status=0;
+    }
+    if(Zone4_Status == 1 && Sensor_4E == 0x31){
+            Soft_uart_send(four);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();    Zone4_Status=0;
+    }
+    if(Zone5_Status == 1 && Sensor_5E == 0x31){
+           Soft_uart_send(five);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();    Zone5_Status=0;
+    }
+    if(Zone6_Status == 1 && Sensor_6E == 0x31){
+           Soft_uart_send(six);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();    Zone6_Status=0;
+    }
+    if(Zone7_Status == 1 && Sensor_7E == 0x31){
+            Soft_uart_send(seven);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();    Zone7_Status=0;
+    }
+    if(Zone8_Status == 1 && Sensor_8E == 0x31){
+            Soft_uart_send(eight);    Soft_printstr(Door_str);
+        Soft_printstr(Open_str);     SoftUartNL();    Zone8_Status=0;
+    }
+  }  
      
 }
-
-
-
-    //************************************************************//
-  //**********  SMS AT command from Remote position  ************//
-//**************************************************************//
+  //************************************************************//
+ //**********  SMS AT command from Remote position  ***********//
+//************************************************************//
 
 
 void Service_provoider(unsigned char recv){
@@ -328,9 +323,9 @@ void Service_provoider(unsigned char recv){
 }
 
 
-    //************************************************************//
-  //****************  Find Blance using AT cmd  *****************//
-//**************************************************************//
+  //*************************************************************//
+ //****************  Find Blance using AT cmd  *****************//
+//*************************************************************//
 
 void Balance_AT_cmd(unsigned char recv){
   unsigned char val,i=0;
@@ -349,8 +344,8 @@ void Balance_AT_cmd(unsigned char recv){
   }
 
   Soft_printstr("\r"); 
-   
-   delay(8000);
+  Check_RecievedSMS(8); 
+  //delay(8000);
   // asm clrwdt
 }
 
@@ -363,66 +358,11 @@ void humidity_tempr_threshhold(unsigned char val){
 
 }
    
-   
+  //*************************************************************//
+ //****************  Humidity and Temperatue  ******************//
+//*************************************************************//  
 void String_send(void){
-  if(Sensor_1E == 0x31){
-    Soft_uart_send(one);      Soft_printstr(Door_str);
-    if(Zone1_Prev ==  Door_closed)        
-      Soft_printstr(Colse_str);
-    else 
-      Soft_printstr(Open_str);
-    SoftUartNL();
-  }
-  /***************************************************************************/
-  if(Sensor_2E == 0x31){   
-    Soft_uart_send(two); Soft_printstr(Door_str);
-    if(Zone2_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-    SoftUartNL();
-  }        
-  /***************************************************************************/
-  if(Sensor_3E == 0x31){
-    Soft_uart_send(three); Soft_printstr(Door_str);
-    if(Zone3_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-    SoftUartNL();
-  }        
-  /***************************************************************************/
-  if(Sensor_4E == 0x31){   
-    Soft_uart_send(four); Soft_printstr(Door_str);
-    if(Zone4_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-    SoftUartNL();
-  }       
-  /***************************************************************************/
-  if(Sensor_5E == 0x31){   
-    Soft_uart_send(five); Soft_printstr(Door_str);
-    if(Zone5_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-    SoftUartNL();
-  }       
-  /***************************************************************************/
-  if(Sensor_6E == 0x31){  
-    Soft_uart_send(six); Soft_printstr(Door_str);
-    if(Zone6_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-    SoftUartNL();
-  }       
-  /***************************************************************************/
-  if(Sensor_7E == 0x31){  
-    Soft_uart_send(seven); Soft_printstr(Door_str);
-    if(Zone7_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-    SoftUartNL();
-  }       
-  /***************************************************************************/
-  if(Sensor_8E == 0x31){    
-    Soft_uart_send(eight); Soft_printstr(Door_str);
-    if(Zone8_Prev ==  Door_closed)        Soft_printstr(Colse_str);
-    else Soft_printstr(Open_str);
-      SoftUartNL();
-  }       
- /***************************************************************************/
+  
 
 }   
 

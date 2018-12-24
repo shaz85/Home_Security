@@ -51,7 +51,7 @@ char Enab = 0x31;
 char ATCMGF[12]="AT+CMGF=1\r";
 char ATCMGS[10]="AT+CMGS=";
 
-char Password[7]="Mega>",Master[15]="+923347455997";
+char Password[7]="Mega>",Master[15]="+923217601702";
 char Master1[15]="+923096891878";
 char M_Recv_numb[15];
 char CTRL_Z=26;
@@ -86,7 +86,10 @@ char *res,txt22[4],Message[150],MesG_RR=0,prv;
 char Error_cnt=0;
 unsigned int Message_cnt;
 
-char Sensor_1E  = 49, Sensor_2E  = 49, Sensor_3E  = 49, Sensor_4E  = 49, Sensor_5E  = 49, Sensor_6E  = 49, Sensor_7E  = 49;
+char Sensor_1E  = 49, Sensor_2E  = 49, Sensor_3E  = 49, 
+     Sensor_4E  = 49, 
+     Sensor_5E  = 49, Sensor_6E  = 49, Sensor_7E  = 49;
+
 char Sensor_8E  = 49, Sensor_9E  = 49, Sensor_10E = 49;
 unsigned char    Enable = 0x31, Disable = 0x30,Read;
 //int Zone_1Sensor,Zone_2Sensor,Zone_3Sensor,Zone_4Sensor;
@@ -101,7 +104,7 @@ int AT_check=0;
 
  //*************************************************************//
 //**************************************************************//
-String pasword = String("Mega");
+//String pasword = String("Mega");
 
 
 String Byte12_str;
