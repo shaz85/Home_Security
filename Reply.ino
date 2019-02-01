@@ -344,7 +344,7 @@ void Balance_AT_cmd(unsigned char recv){
   }
 
   Soft_printstr("\r"); 
-  Check_RecievedSMS(8); 
+  Check_RecievedSMS(5); 
   //delay(8000);
   // asm clrwdt
 }

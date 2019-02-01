@@ -8,7 +8,7 @@ ISR(TIMER2_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
   //generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
  
    //digitalWrite(13, digitalRead(13) ^ 1);
-  if(cont_v > 10){
+  if(cont_v > 1){
     if(zone1_in_alert){
       if(digitalRead(ZONE1_PIN))
           zone1_up_debounce++;

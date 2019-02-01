@@ -14,8 +14,8 @@ void Security_call(void){
           Soft_uart_send(PhoneNOList[i][j]);//Delay_us(1);
       }
       Soft_printstr(";\r");res =strstr(gsm_data,"BUSY"); 
-      for(j=1;j<10;j++){
-        Check_RecievedSMS(2);                  
+      for(j=1;j<15;j++){
+        /*Check_RecievedSMS(2);                  
         if(j%3==0) res =strstr(gsm_data,"BUSY"); 
         else if(j%5==0) res =strstr(gsm_data,"NO ANSWER");
         //else if(j%10==0) print_strU0(gsm_data);
@@ -23,12 +23,12 @@ void Security_call(void){
         if(res!=0){
           Soft_printstr(gsm_data);         
           break;
-        }
+        }*/
         delay(1000);                 
                    
       }
       uart_send(i|0x30);              
-      print_strU0("VM\r");
+      print_strU0("-Call\r");
       Soft_printstr("ATH\r");
       print_strU0(gsm_data);delay(2000);
       GSM_str_clear();
@@ -125,6 +125,11 @@ void Send_SMS_AlertsP2(unsigned char cmd){
         case 8:            // Zone 8
           Soft_printstr(Door_str);  Soft_uart_send(eight);
           Soft_printstr(Open_str);
+          break;
+        /******************************************************************/       
+        case 10:            // Zone 8
+          Soft_printstr("Device Battery going Low ");Soft_printstr(Array12B); 
+          Soft_printstr("%") ;
           break;
         /******************************************************************/  
         case 32:           

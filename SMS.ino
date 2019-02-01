@@ -71,10 +71,11 @@ void Check_RecievedSMS(unsigned char Val){
   }
 
   for(i=0;i<(55000*Val);i++){
+
     if(mySerial.available()){
       gsm_data[recv_cnt] = mySerial.read(); i=0;
       if(Val == 4 && gsm_data[recv_cnt] == '>'){        
-        print_strU0("found>\r");
+        print_strU0(" found> ");
         break;      
       }
       if(strstr(gsm_data, "+CMGS") && Val ==10)

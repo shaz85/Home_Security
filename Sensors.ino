@@ -1,6 +1,6 @@
 
 unsigned char message_send_zones=0;
-unsigned char stability_sensor_cnt = 60;
+unsigned char stability_sensor_cnt = 10;
 unsigned char zone1_alert_send = 0, zone2_alert_send = 0, zone3_alert_send = 0, zone4_alert_send = 0;
   //**************************************************************//
  //********************* Motion_and_Smoke  **********************//
