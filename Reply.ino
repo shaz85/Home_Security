@@ -98,6 +98,13 @@ void Send_SMS(unsigned char val){
     for(pV=0;pV<100 & pV<len;pV++) Soft_uart_send( pgm_read_byte_near (Reboot+pV));
     //print_strU0("Reboot");
   }
+
+  /***************************************************************************/
+       //Thresh hold  for humidity and Temperature cmd 2
+  else if (val == 10){ //delay(2000);
+    Soft_printstr(gsm_data);
+    //print_strU0("Reboot");
+  }
         
   /***************************************************************************/
             //Alert Message for any sensor out of range

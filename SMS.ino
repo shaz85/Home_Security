@@ -43,7 +43,7 @@ void SMS_check(void){
     print_strU0(gsm_data);GSM_str_clear();
     csc_cnt = 0 ; 
   }
-  Soft_printstr(ATCMGL_ALL); 
+  Soft_printstr(ATCMGL_ALL);  
   Check_RecievedSMS(3); 
    
   if(recv_cnt > 35){ // New SMS Arrived

@@ -30,10 +30,15 @@ void Message_extraction(void){
     print_strU0("VM $");
        // print_strU0("ALL OK\r");
        
-    /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
-     
+    /*$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/    
     
     for(jj=0;Message[jj]!=0&&jj<150;jj++){
+
+      if(Message[jj]=='C'&&Message[jj+1]=='1' && Message[jj+2]=='0'){//Phone Number Recieved for Alerts
+          get_sig_bv();str_clearF=1;
+          Send_SMS(10);break;
+      }
+
       if(Message[jj]=='C'&&Message[jj+1]=='1'){//Phone Number Recieved for Alerts
           phone_numbers_Read();
           Send_SMS(1);break;
@@ -239,4 +244,15 @@ void SMS_Repetation(unsigned char addres){
       EEPROM.write(250 , SMS_RepetationT);
     else SMS_RepetationT = 1;
   }
+}
+
+
+void get_sig_bv(){
+  GSM_str_clear();
+  Soft_printstr(bv_str);      
+  Check_RecievedSMS(1);
+  Soft_printstr(sq_str);      
+  Check_RecievedSMS(1);
+
+
 }

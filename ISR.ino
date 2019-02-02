@@ -13,7 +13,7 @@ ISR(TIMER2_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
       if(digitalRead(ZONE1_PIN))
           zone1_up_debounce++;
       else if(!digitalRead(ZONE1_PIN))
-        zone1_down_debounce++; 
+          zone1_down_debounce++; 
     }
     if(zone2_in_alert){
 

@@ -5,16 +5,22 @@
 void Security_call(void){
   unsigned char i,j,k,dd;//Soft_printstr("First\r");
   k=0;
-  for(i=0;i<5;i++){         
+  char disconnect_call[]="ATH\r\n";
+  UART0_NL();
+  for(i=0;i<5;i++){  
+    if(i==1)delay(4000);       
     if(PhoneNOList[i][0]=='+'|PhoneNOList[i][1]=='9'){ 
       GSM_str_clear();
-      Soft_printstr("ATD");
+      uart_send(i|0x30);
+      Soft_printstr("\r\nATD");
       for(j=0;j<13;j++){
         if((PhoneNOList[i][j]>=0x30&&PhoneNOList[i][j]<=0x39)|PhoneNOList[i][j]=='+')
           Soft_uart_send(PhoneNOList[i][j]);//Delay_us(1);
+          uart_send(PhoneNOList[i][j]);
       }
-      Soft_printstr(";\r");res =strstr(gsm_data,"BUSY"); 
-      for(j=1;j<15;j++){
+      Soft_printstr(";\r\n");
+      //res =strstr(gsm_data,"BUSY"); 
+      for(long j=1;j<20000;j++){
         /*Check_RecievedSMS(2);                  
         if(j%3==0) res =strstr(gsm_data,"BUSY"); 
         else if(j%5==0) res =strstr(gsm_data,"NO ANSWER");
@@ -24,14 +30,19 @@ void Security_call(void){
           Soft_printstr(gsm_data);         
           break;
         }*/
-        delay(1000);                 
+        /*
+        if(mySerial.available()){
+          uart_send(mySerial.read());
+        }*/
+        delay(1);                 
                    
       }
-      uart_send(i|0x30);              
-      print_strU0("-Call\r");
-      Soft_printstr("ATH\r");
-      print_strU0(gsm_data);delay(2000);
-      GSM_str_clear();
+                    
+      
+      Soft_printstr(disconnect_call); delay(1000);
+      Soft_printstr(disconnect_call); delay(1500);
+      print_strU0("-Call\r\n");
+      
     }
   }  
 }
@@ -141,7 +152,7 @@ void Send_SMS_AlertsP2(unsigned char cmd){
       if(1){
         send_1=0;
         res = strstr(gsm_data, "MGS");delay(2000); //Soft_uart_send('+');
-        if(res!=0){ send_1=1; uart_send('Y');}
+        if(res!=0){ send_1=1; print_strU0("send");UART0_NL();}
       }
       if(cmd == 'A')break;
       delay(500); //asm clrwdt
