@@ -36,6 +36,7 @@ void Message_extraction(void){
 
       if(Message[jj]=='C'&&Message[jj+1]=='1' && Message[jj+2]=='0'){//Phone Number Recieved for Alerts
           get_sig_bv();str_clearF=1;
+
           Send_SMS(10);break;
       }
 
@@ -90,7 +91,7 @@ void Message_extraction(void){
         
         Check_RecievedSMS(4); str_clearF=1;
         print_strU0(gsm_data);   
-        Send_SMS(11);
+        Send_SMS(10);
         break;
       }
       
@@ -109,7 +110,7 @@ void Message_extraction(void){
                     //Serice activation command
       if(Message[jj] == 'Z' && Message[jj+1] == 'Z'){  
         jj+=2;Service_provoider(jj);Check_RecievedSMS(4);str_clearF=1;   
-        Send_SMS(11);     
+        Send_SMS(10);     
         break;
       }
         /***************************************************************************/

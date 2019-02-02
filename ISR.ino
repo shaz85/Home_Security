@@ -6,7 +6,9 @@
 unsigned int cont_v=0;
 ISR(TIMER2_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
   //generates pulse wave of frequency 1Hz/2 = 0.5kHz (takes two cycles for full wave- toggle high then toggle low)
- 
+ reboot_value_cnt++;
+ if(reboot_value_cnt > 450000)
+    resetFunc();
    //digitalWrite(13, digitalRead(13) ^ 1);
   if(cont_v > 1){
     if(zone1_in_alert){
@@ -96,8 +98,12 @@ void UART0_NL(void){
 void Soft_printstr(char *str){
   int i;      
   for(i=0;str[i] && i<240;i++)
-    if(str[i]> 0x01 && str[i] < 250)
-      mySerial.write(str[i]);     
+    if(str[i]> 0x01 && str[i] < 250){
+      if(not_send_newline_flag == 1 && (str[i] == 10 || str[i] == 13) )
+        mySerial.write(' ');
+      else
+        mySerial.write(str[i]);
+    }
 }
 /***************************************************************************/
 void Soft_uart_send(unsigned char dat){     

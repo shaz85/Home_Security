@@ -101,9 +101,10 @@ void Send_SMS(unsigned char val){
 
   /***************************************************************************/
        //Thresh hold  for humidity and Temperature cmd 2
-  else if (val == 10){ //delay(2000);
+  else if (val == 10){ 
+    not_send_newline_flag = 1;
     Soft_printstr(gsm_data);
-    //print_strU0("Reboot");
+    not_send_newline_flag = 0;
   }
         
   /***************************************************************************/
@@ -153,7 +154,7 @@ void Send_SMS(unsigned char val){
     if((strstr(gsm_data, "+CMGS:"))!=0)break;
   }  
   if(saved_EppromV == 100){saved_EppromV= 99;  delay(8000);}    
-  print_strU0(gsm_data);print_strU0("SSS\r");
+  print_strU0(gsm_data);print_strU0("DONE\r");
    //SoftUartNL();Soft_printstr("R-");
            
  }

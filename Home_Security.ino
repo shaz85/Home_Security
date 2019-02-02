@@ -3,6 +3,8 @@
 #include "Main1H.h"
 #include "MainH.h"
 SoftwareSerial mySerial(10, 11); // RX, TX
+char not_send_newline_flag = 0;
+long int reboot_value_cnt=0;
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
 char bv_str[] ="AT+CBC\r";
@@ -17,9 +19,11 @@ char battery_voltage = 100;
   //**************************************************************//
  //********************* Motion_and_Smoke  **********************//
 //**************************************************************//
+long next_idle_ms = millis();
 void setup() {
   initlization();  
   Soft_printstr("ATE0&W\r");
+  next_idle_ms = millis();
 }
 
 unsigned int loop_Message=5001;
@@ -34,21 +38,22 @@ void loop() {
   loop_Message++;
   if(loop_Message > 3000){//uart_send('M'); 
     digitalWrite(13, HIGH); 
-    long next_idle_ms = millis();
+    
   
-    SMS_check();loop_Message =0;
-    res = strstr(datastr , "$");  
-    cntv++;digitalWrite(13, LOW);
+    SMS_check();  loop_Message =0;     
+    cntv++;       digitalWrite(13, LOW);
     if(cntv>2){
       Battery_value();      
       cntv=0;
     }
+
     itoa(millis()- next_idle_ms , Array12B,10);
     //print_strU0(Array12B);  
   }    
-  delay(1);
-   
+  delay(1);   
   sensors_status_check();
+  reboot_value_cnt =0;
+
 }
 
 
@@ -59,6 +64,7 @@ void Battery_value(){
   GSM_str_clear();
   Soft_printstr(bv_str);      
   Check_RecievedSMS(1);
+  if(strlen(gsm_data)<5)mySerial.begin(9600);
   //print_strU0(gsm_data);
 
   char *ptr;

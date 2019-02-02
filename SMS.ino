@@ -6,7 +6,9 @@
 
 void SMS_Del_All(void){
   unsigned int i,j;
-  delay(1000);               
+  delay(1000); 
+  print_strU0(gsm_data);
+  int len = strlen(gsm_data);              
   Soft_printstr(ATCMGF);delay(5);
   GSM_str_clear();
   len = strlen_P(ATQMGDA);
@@ -18,8 +20,8 @@ void SMS_Del_All(void){
     delay(1);  
     if(recv_cnt>148)recv_cnt=147;
   }
-
-  print_strU0("Dell " );
+  if(len > 200){ delay(10000); print_strU0("Dell "); }
+  
   print_strU0(gsm_data);GSM_str_clear();
   //Soft_uart_send
   print_strU0("S " );
