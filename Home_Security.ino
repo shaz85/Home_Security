@@ -85,9 +85,9 @@ void Battery_value(){
     battery_voltage = atoi(Array12B);
     print_strU0(Array12B);print_strU0(",");
 
-    if(battery_voltage < 55){
+    if(battery_voltage < 60){
       battery_alert_cnt++;
-      if(battery_alert_cnt > 5 && battery_alert_flag ==1 ){
+      if(battery_alert_cnt > 4 && battery_alert_flag ==1 ){
         Send_SMS_AlertsP2(10);
         battery_alert_flag =0;
         print_strU0("Alert battery Low");

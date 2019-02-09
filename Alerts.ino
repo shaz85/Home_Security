@@ -139,8 +139,8 @@ void Send_SMS_AlertsP2(unsigned char cmd){
           break;
         /******************************************************************/       
         case 10:            // Zone 8
-          Soft_printstr("Device Battery going Low ");Soft_printstr(Array12B); 
-          Soft_printstr("%") ;
+          Soft_printstr("Device Battery going Low ");//Soft_printstr(Array12B); 
+          //Soft_printstr("%") ;
           break;
         /******************************************************************/  
         case 32:           
