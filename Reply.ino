@@ -105,6 +105,8 @@ void Send_SMS(unsigned char val){
     not_send_newline_flag = 1;
     Soft_printstr(gsm_data);
     not_send_newline_flag = 0;
+    Soft_printstr(device_verison);
+  Soft_printstr(__TIME__);Soft_printstr(" Date:");Soft_printstr(__DATE__);
   }
         
   /***************************************************************************/
@@ -172,7 +174,7 @@ void Send_SMS_Phase2(unsigned char val){
   Soft_uart_send(Sensor_6E);Soft_uart_send(Comma1);
 
   Soft_uart_send(Sensor_7E);Soft_uart_send(Sensor_8E);
-  //uart_send(Sensor_9E);uart_send(Comma1);
+  Soft_uart_send(Sensor_9E);Soft_uart_send(Comma1);
 
   //uart_send(Sensor_10E);
 }
@@ -239,12 +241,12 @@ void Status_Message(void ){
     SoftUartNL();
   }       
  /***************************************************************************/
-  if(Sensor_8E == 0x31){    
+/*  if(Sensor_8E == 0x31){    
     Soft_printstr(Door_str);  Soft_uart_send(eight);
     if(Zone8_Prev ==  Door_closed)        Soft_printstr(Colse_str);
     else Soft_printstr(Open_str);
     SoftUartNL();
-  }       
+  } */      
  /***************************************************************************/
 //print_strU0("SSS\r");  
  // Soft_uart_send(CTRL_Z); delay(5000); 
@@ -294,10 +296,10 @@ void DoorOpened(void){
             Soft_uart_send(seven);    Soft_printstr(Door_str);
         Soft_printstr(Open_str);     SoftUartNL();    Zone7_Status=0;
     }
-    if(Zone8_Status == 1 && Sensor_8E == 0x31){
+/*    if(Zone8_Status == 1 && Sensor_8E == 0x31){
             Soft_uart_send(eight);    Soft_printstr(Door_str);
         Soft_printstr(Open_str);     SoftUartNL();    Zone8_Status=0;
-    }
+    }*/
   }  
      
 }

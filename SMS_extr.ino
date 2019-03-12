@@ -179,7 +179,7 @@ void Sensor_Enable_disble(unsigned char addres){
   addres++;
   Sensor_7E = Message[addres++];  EEPROM.write(230,Sensor_7E);
   Sensor_8E = Message[addres++];  EEPROM.write(231,Sensor_8E);
-  //Sensor_9E  = Message[addres++]; EEPROM.write(232,Sensor_9E);
+  Sensor_9E  = Message[addres++]; EEPROM.write(232,Sensor_9E);
 
   addres++;
   //Sensor_10E = Message[addres++]; EEPROM.write(233,Sensor_10E);
@@ -252,7 +252,7 @@ void get_sig_bv(){
   GSM_str_clear();
   Soft_printstr(bv_str);      
   Check_RecievedSMS(1);
-  Soft_printstr(sq_str);      
+  Soft_printstr(sq_str);        
   Check_RecievedSMS(1);
 
 

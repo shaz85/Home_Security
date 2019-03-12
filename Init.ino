@@ -148,7 +148,7 @@ void uart_send_EEPROM(void){
     uart_send(Sensor_3E);uart_send(Comma1);
     uart_send(Sensor_4E);uart_send(Sensor_4E);
     uart_send(Sensor_6E);uart_send(Comma1);
-    uart_send(Sensor_7E);uart_send(Sensor_8E);
+    uart_send(Sensor_7E);uart_send(Sensor_8E);uart_send(Sensor_9E);
     uart_send(Comma1); 
 
     print_strU0("Call SMS Rep\r");
